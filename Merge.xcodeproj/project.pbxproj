@@ -19,6 +19,16 @@
 		35722E8618D21B5B008D71F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6E18D21B5B008D71F9 /* UIKit.framework */; };
 		35722E8E18D21B5B008D71F9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35722E8C18D21B5B008D71F9 /* InfoPlist.strings */; };
 		35722E9018D21B5B008D71F9 /* MergeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722E8F18D21B5B008D71F9 /* MergeTests.m */; };
+		35722E9D18D2477F008D71F9 /* GameNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722E9C18D2477F008D71F9 /* GameNavigationController.m */; };
+		35722EAD18D24895008D71F9 /* EXDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EA018D24895008D71F9 /* EXDebug.m */; };
+		35722EAE18D24895008D71F9 /* EXRemoteLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EA218D24895008D71F9 /* EXRemoteLog.m */; };
+		35722EAF18D24895008D71F9 /* MathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EA418D24895008D71F9 /* MathHelper.m */; };
+		35722EB018D24895008D71F9 /* NS+Hashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EA618D24895008D71F9 /* NS+Hashes.m */; };
+		35722EB118D24895008D71F9 /* PersistentDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EA818D24895008D71F9 /* PersistentDictionary.m */; };
+		35722EB218D24895008D71F9 /* SingletonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EAA18D24895008D71F9 /* SingletonHelper.m */; };
+		35722EB318D24895008D71F9 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EAC18D24895008D71F9 /* SKBounceAnimation.m */; };
+		35722EB618D248A8008D71F9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB418D248A8008D71F9 /* AVFoundation.framework */; };
+		35722EB718D248A8008D71F9 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB518D248A8008D71F9 /* GameKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +58,24 @@
 		35722E8B18D21B5B008D71F9 /* MergeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MergeTests-Info.plist"; sourceTree = "<group>"; };
 		35722E8D18D21B5B008D71F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		35722E8F18D21B5B008D71F9 /* MergeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MergeTests.m; sourceTree = "<group>"; };
+		35722E9B18D2477F008D71F9 /* GameNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameNavigationController.h; sourceTree = "<group>"; };
+		35722E9C18D2477F008D71F9 /* GameNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameNavigationController.m; sourceTree = "<group>"; };
+		35722E9F18D24895008D71F9 /* EXDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXDebug.h; sourceTree = "<group>"; };
+		35722EA018D24895008D71F9 /* EXDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXDebug.m; sourceTree = "<group>"; };
+		35722EA118D24895008D71F9 /* EXRemoteLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXRemoteLog.h; sourceTree = "<group>"; };
+		35722EA218D24895008D71F9 /* EXRemoteLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXRemoteLog.m; sourceTree = "<group>"; };
+		35722EA318D24895008D71F9 /* MathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathHelper.h; sourceTree = "<group>"; };
+		35722EA418D24895008D71F9 /* MathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathHelper.m; sourceTree = "<group>"; };
+		35722EA518D24895008D71F9 /* NS+Hashes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS+Hashes.h"; sourceTree = "<group>"; };
+		35722EA618D24895008D71F9 /* NS+Hashes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS+Hashes.m"; sourceTree = "<group>"; };
+		35722EA718D24895008D71F9 /* PersistentDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentDictionary.h; sourceTree = "<group>"; };
+		35722EA818D24895008D71F9 /* PersistentDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentDictionary.m; sourceTree = "<group>"; };
+		35722EA918D24895008D71F9 /* SingletonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingletonHelper.h; sourceTree = "<group>"; };
+		35722EAA18D24895008D71F9 /* SingletonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingletonHelper.m; sourceTree = "<group>"; };
+		35722EAB18D24895008D71F9 /* SKBounceAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBounceAnimation.h; sourceTree = "<group>"; };
+		35722EAC18D24895008D71F9 /* SKBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBounceAnimation.m; sourceTree = "<group>"; };
+		35722EB418D248A8008D71F9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		35722EB518D248A8008D71F9 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35722EB618D248A8008D71F9 /* AVFoundation.framework in Frameworks */,
+				35722EB718D248A8008D71F9 /* GameKit.framework in Frameworks */,
 				35722E6D18D21B5B008D71F9 /* CoreGraphics.framework in Frameworks */,
 				35722E6F18D21B5B008D71F9 /* UIKit.framework in Frameworks */,
 				35722E6B18D21B5B008D71F9 /* Foundation.framework in Frameworks */,
@@ -96,6 +126,8 @@
 		35722E6918D21B5B008D71F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				35722EB418D248A8008D71F9 /* AVFoundation.framework */,
+				35722EB518D248A8008D71F9 /* GameKit.framework */,
 				35722E6A18D21B5B008D71F9 /* Foundation.framework */,
 				35722E6C18D21B5B008D71F9 /* CoreGraphics.framework */,
 				35722E6E18D21B5B008D71F9 /* UIKit.framework */,
@@ -107,6 +139,7 @@
 		35722E7018D21B5B008D71F9 /* Merge */ = {
 			isa = PBXGroup;
 			children = (
+				35722E9918D24770008D71F9 /* Classes */,
 				35722E7918D21B5B008D71F9 /* AppDelegate.h */,
 				35722E7A18D21B5B008D71F9 /* AppDelegate.m */,
 				35722E7C18D21B5B008D71F9 /* Images.xcassets */,
@@ -142,6 +175,45 @@
 				35722E8C18D21B5B008D71F9 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		35722E9918D24770008D71F9 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				35722E9E18D24895008D71F9 /* Helpers */,
+				35722E9A18D24770008D71F9 /* Controllers */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		35722E9A18D24770008D71F9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				35722E9B18D2477F008D71F9 /* GameNavigationController.h */,
+				35722E9C18D2477F008D71F9 /* GameNavigationController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		35722E9E18D24895008D71F9 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				35722E9F18D24895008D71F9 /* EXDebug.h */,
+				35722EA018D24895008D71F9 /* EXDebug.m */,
+				35722EA118D24895008D71F9 /* EXRemoteLog.h */,
+				35722EA218D24895008D71F9 /* EXRemoteLog.m */,
+				35722EA318D24895008D71F9 /* MathHelper.h */,
+				35722EA418D24895008D71F9 /* MathHelper.m */,
+				35722EA518D24895008D71F9 /* NS+Hashes.h */,
+				35722EA618D24895008D71F9 /* NS+Hashes.m */,
+				35722EA718D24895008D71F9 /* PersistentDictionary.h */,
+				35722EA818D24895008D71F9 /* PersistentDictionary.m */,
+				35722EA918D24895008D71F9 /* SingletonHelper.h */,
+				35722EAA18D24895008D71F9 /* SingletonHelper.m */,
+				35722EAB18D24895008D71F9 /* SKBounceAnimation.h */,
+				35722EAC18D24895008D71F9 /* SKBounceAnimation.m */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,8 +311,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35722EB218D24895008D71F9 /* SingletonHelper.m in Sources */,
+				35722EB118D24895008D71F9 /* PersistentDictionary.m in Sources */,
+				35722EAD18D24895008D71F9 /* EXDebug.m in Sources */,
+				35722EAE18D24895008D71F9 /* EXRemoteLog.m in Sources */,
+				35722E9D18D2477F008D71F9 /* GameNavigationController.m in Sources */,
 				35722E7B18D21B5B008D71F9 /* AppDelegate.m in Sources */,
 				35722E7718D21B5B008D71F9 /* main.m in Sources */,
+				35722EAF18D24895008D71F9 /* MathHelper.m in Sources */,
+				35722EB318D24895008D71F9 /* SKBounceAnimation.m in Sources */,
+				35722EB018D24895008D71F9 /* NS+Hashes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +517,7 @@
 				35722E9518D21B5B008D71F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		35722E9618D21B5B008D71F9 /* Build configuration list for PBXNativeTarget "MergeTests" */ = {
 			isa = XCConfigurationList;
@@ -445,6 +526,7 @@
 				35722E9818D21B5B008D71F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

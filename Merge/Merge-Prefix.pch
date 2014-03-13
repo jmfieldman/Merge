@@ -13,4 +13,16 @@
 #ifdef __OBJC__
 	#import <UIKit/UIKit.h>
 	#import <Foundation/Foundation.h>
+
+	#import <AVFoundation/AVFoundation.h>
+	#import <GameKit/GameKit.h>
+
+	#import "EXDebug.h"
+	#import "EXRemoteLog.h"
+	#import "NS+Hashes.h"
+	#import "PersistentDictionary.h"
+	#import "SingletonHelper.h"
+	#import "SKBounceAnimation.h"
+	#import "MathHelper.h"
+	
 #endif
