@@ -10,7 +10,7 @@
 #import "ShapeCellView.h"
 
 @interface GameNavigationController : UIViewController {
-	ShapeCellView *_shapeCell;
+	NSMutableArray *_shapeCells;
 }
 
 SINGLETON_INTR(GameNavigationController);

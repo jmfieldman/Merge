@@ -124,6 +124,16 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 		_currentColor = [UIColor clearColor];
 		[_shapeContainer.layer addSublayer:_shapeLayer];
 		
+		_shapeLayer.strokeColor = [UIColor grayColor].CGColor;
+		_shapeLayer.lineWidth = 1;
+		
+		_shapeLayer.shadowOpacity = 0.3;
+		_shapeLayer.shadowOffset = CGSizeMake(0, 0);
+		_shapeLayer.shadowRadius = 3;
+		
+		_shapeLayer.shouldRasterize = YES;
+		_shapeLayer.rasterizationScale = [UIScreen mainScreen].scale;
+		
 	}
 	return self;
 }
