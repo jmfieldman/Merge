@@ -13,7 +13,7 @@
 	CAShapeLayer *_shapeLayer;
 	
 	/* Shape radius */
-	int           _shapeRadius;
+	int           _shapeWidth;
 	
 	/* Color */
 	UIColor      *_currentColor;

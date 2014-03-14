@@ -23,7 +23,7 @@ SINGLETON_IMPL(GameNavigationController);
 		self.view.backgroundColor = [UIColor whiteColor];
 		
 		_shapeCell = [[ShapeCellView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
-		[_shapeCell setShape:2 duration:0 color:[UIColor redColor]];
+		[_shapeCell setShape:0 duration:0 color:[UIColor redColor]];
 		[self.view addSubview:_shapeCell];
 	
 		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -36,7 +36,7 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) test:(id)sender {
-	[_shapeCell setShape:(_shapeCell.shapeId+1)%3 duration:0.2 color:[UIColor colorWithHue:(rand()%255)/255.0 saturation:1 brightness:1 alpha:1]];
+	[_shapeCell setShape:(_shapeCell.shapeId+1)%7 duration:0.2 color:[UIColor colorWithHue:(rand()%255)/255.0 saturation:1 brightness:1 alpha:1]];
 }
 
 @end
