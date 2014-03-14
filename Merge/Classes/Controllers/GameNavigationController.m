@@ -30,14 +30,18 @@ SINGLETON_IMPL(GameNavigationController);
 			[self.view addSubview:shapeCell];
 			[_shapeCells addObject:shapeCell];
 		}
-		#endif
+		
 		for (int x = 0; x < 4; x++) for (int y = 0; y < 4; y++) {
 			ShapeCellView *shapeCell = [[ShapeCellView alloc] initWithFrame:CGRectMake(70+(x*60), 50+(y*60), 50, 50)];
 			[shapeCell setShape:rand()%7 duration:0 color:[UIColor redColor]];
 			if (rand()%2==0)[self.view addSubview:shapeCell];
 			[_shapeCells addObject:shapeCell];
 		}
-	
+		#endif
+		
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(50, 70, 200, 200) sideCount:4 cellSize:40];
+		[self.view addSubview:_board];
+		
 		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		test.frame = CGRectMake(50, 320, 100, 100);
 		[test setTitle:@"test" forState:UIControlStateNormal];
@@ -48,9 +52,11 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) test:(id)sender {
-	for (ShapeCellView *cell in _shapeCells) {
-		[cell setShape:(cell.shapeId+1)%7 duration:0.2 color:[UIColor colorWithHue:((cell.shapeId+1)%7)/7.0 saturation:0.5 brightness:1 alpha:1]];
-	}
+	//for (ShapeCellView *cell in _shapeCells) {
+	//	[cell setShape:(cell.shapeId+1)%7 duration:0.2 color:[UIColor colorWithHue:((cell.shapeId+1)%7)/7.0 saturation:0.5 brightness:1 alpha:1]];
+	//}
+	
+	[_board addShape:rand()%6 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0];
 }
 
 @end

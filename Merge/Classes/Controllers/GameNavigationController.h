@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ShapeCellView.h"
+#import "BoardView.h"
 
 @interface GameNavigationController : UIViewController {
 	NSMutableArray *_shapeCells;
+	BoardView *_board;
 }
 
 SINGLETON_INTR(GameNavigationController);

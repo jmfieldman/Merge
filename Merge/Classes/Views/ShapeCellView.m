@@ -26,9 +26,9 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	NSMutableArray *paths = [NSMutableArray array];
 	s_shapeBezierPaths[@(width)] = paths;
 	
-	float cir_sz = width * 0.86;
-	UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-cir_sz/2, -cir_sz/2, cir_sz, cir_sz)];
-	[paths addObject:circle];
+	//float cir_sz = width * 0.86;
+	//UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-cir_sz/2, -cir_sz/2, cir_sz, cir_sz)];
+	//[paths addObject:circle];
 	
 	UIBezierPath *triangle = [UIBezierPath bezierPath];
 	[triangle moveToPoint:CGPointMake(0, -halfwidth)];
@@ -143,7 +143,7 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	
 	_shapeId = shapeId;
 	
-	{
+	if (duration > 0) {
 		CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"path"];
 		[anim setFromValue:(__bridge id)_shapeLayer.path];
 		[anim setToValue:(__bridge id)((UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:shapeId]).CGPath];
@@ -156,7 +156,7 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	
 	{
 		CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"fillColor"];
-		[anim setFromValue:(__bridge id)_currentColor.CGColor];
+		[anim setFromValue:(__bridge id)(_currentColor ? _currentColor.CGColor : color.CGColor)];
 		[anim setToValue:(__bridge id)color.CGColor];
 		[anim setDuration:duration];
 		anim.removedOnCompletion = NO;
