@@ -29,6 +29,7 @@
 		35722EB318D24895008D71F9 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EAC18D24895008D71F9 /* SKBounceAnimation.m */; };
 		35722EB618D248A8008D71F9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB418D248A8008D71F9 /* AVFoundation.framework */; };
 		35722EB718D248A8008D71F9 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB518D248A8008D71F9 /* GameKit.framework */; };
+		35722EBB18D24977008D71F9 /* ShapeCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EBA18D24977008D71F9 /* ShapeCellView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,8 @@
 		35722EAC18D24895008D71F9 /* SKBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBounceAnimation.m; sourceTree = "<group>"; };
 		35722EB418D248A8008D71F9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		35722EB518D248A8008D71F9 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		35722EB918D24977008D71F9 /* ShapeCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeCellView.h; sourceTree = "<group>"; };
+		35722EBA18D24977008D71F9 /* ShapeCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeCellView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +183,7 @@
 		35722E9918D24770008D71F9 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				35722EB818D2495E008D71F9 /* Views */,
 				35722E9E18D24895008D71F9 /* Helpers */,
 				35722E9A18D24770008D71F9 /* Controllers */,
 			);
@@ -214,6 +218,15 @@
 				35722EAC18D24895008D71F9 /* SKBounceAnimation.m */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		35722EB818D2495E008D71F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				35722EB918D24977008D71F9 /* ShapeCellView.h */,
+				35722EBA18D24977008D71F9 /* ShapeCellView.m */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,6 +333,7 @@
 				35722E7718D21B5B008D71F9 /* main.m in Sources */,
 				35722EAF18D24895008D71F9 /* MathHelper.m in Sources */,
 				35722EB318D24895008D71F9 /* SKBounceAnimation.m in Sources */,
+				35722EBB18D24977008D71F9 /* ShapeCellView.m in Sources */,
 				35722EB018D24895008D71F9 /* NS+Hashes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ShapeCellView.h"
 
-@interface GameNavigationController : UIViewController
+@interface GameNavigationController : UIViewController {
+	ShapeCellView *_shapeCell;
+}
+
+SINGLETON_INTR(GameNavigationController);
 
 @end
