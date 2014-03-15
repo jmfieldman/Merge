@@ -46,6 +46,21 @@
 	newCell.center = CGPointMake(_cellOffset/2 + _cellOffset*x, _cellOffset/2 + _cellOffset*y);
 	[newCell setShape:shapeId duration:duration color:[[ColorTheme sharedInstance] colorForShapeId:shapeId]];
 
+	/* pop up */
+	newCell.transform = CGAffineTransformMakeScale(0.3, 0.3);
+	newCell.alpha = 0;
+	[UIView animateWithDuration:duration
+						  delay:0
+		 usingSpringWithDamping:0.5
+		  initialSpringVelocity:0.5
+						options:0
+					 animations:^{
+						 newCell.alpha = 1;
+						 newCell.transform = CGAffineTransformIdentity;
+					 } completion:^(BOOL finished) {
+						 
+					 }];
+	
 	_cells[x][y] = newCell;
 	[self addSubview:newCell];
 	
@@ -79,7 +94,7 @@
 			/* No slide */
 			if (fx == x && fy == y) continue;
 			
-			float duration = 1+floatBetween(0, 0.2);
+			float duration = 0.6+floatBetween(0, 0.2);
 			float idamping = 0.7;
 			float velocity = 0.7;
 			
@@ -119,7 +134,9 @@
 				
 				/* Change shape of merged-into */
 				int newShape = _cells[fx][fy].shapeId+1;
-				[_cells[fx][fy] setShape:newShape duration:0.25 color:[[ColorTheme sharedInstance] colorForShapeId:newShape]];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration/3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+					[_cells[fx][fy] setShape:newShape duration:0.25 color:[[ColorTheme sharedInstance] colorForShapeId:newShape]];
+				});
 				
 				/* Merged cells get removed */
 				[_cells[x][y] performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:duration];
@@ -131,6 +148,10 @@
 		}
 		
 	}
+
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+		[_delegate boardDidSlide:self];
+	});
 }
 
 - (void) calculateSlideInDirection:(int)direction forCoord:(CGPoint)start endsAt:(CGPoint*)end merges:(BOOL*)merges {
@@ -234,6 +255,29 @@
 			[self slideInDirection:SLIDE_DIR_S];
 	}
 }
+
+- (BOOL) isFull {
+	for (int y = 0; y < _sideCount; y++) {
+		for (int x = 0; x < _sideCount; x++) {
+			if (!_cells[x][y]) return NO;
+		}
+	}
+	return YES;
+}
+
+- (CGPoint) randomEmptySpace {
+	NSMutableArray *arr = [NSMutableArray array];
+	for (int y = 0; y < _sideCount; y++) {
+		for (int x = 0; x < _sideCount; x++) {
+			if (!_cells[x][y]) [arr addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
+		}
+	}
+	if (![arr count]) {
+		return CGPointMake(-1,-1);
+	}
+	return [((NSValue*) arr[rand()%[arr count]]) CGPointValue];
+}
+
 
 - (void) logBoardShapes {
 	NSMutableString *output = [NSMutableString string];

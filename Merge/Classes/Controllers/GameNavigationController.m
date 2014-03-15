@@ -51,6 +51,7 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
 		[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
+		_board.delegate = self;
 		
 		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		test.frame = CGRectMake(50, 320, 100, 100);
@@ -67,7 +68,14 @@ SINGLETON_IMPL(GameNavigationController);
 	//}
 	
 	//for (int i = 0; i < 100; i++)
-	[_board addShape:rand()%6 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0];
+	[_board addShape:rand()%6 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0.25];
+}
+
+- (void) boardDidSlide:(BoardView*)boardView {
+	if (![boardView isFull]) {
+		CGPoint newp = [boardView randomEmptySpace];
+		[boardView addShape:0 at:newp delay:0 duration:0.25];
+	}
 }
 
 @end

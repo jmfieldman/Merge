@@ -18,6 +18,12 @@ typedef enum SlideDirection {
 	SLIDE_DIR_S = 8,
 } SlideDirection_t;
 
+@class BoardView;
+@protocol BoardViewDelegate <NSObject>
+@required
+- (void) boardDidSlide:(BoardView*)boardView;
+@end
+
 @interface BoardView : UIView <UIGestureRecognizerDelegate> {
 	
 	ShapeCellView *_cells[BOARD_MAX_SIDE][BOARD_MAX_SIDE];
@@ -32,6 +38,7 @@ typedef enum SlideDirection {
 }
 
 @property (nonatomic, readonly) int sideCount;
+@property (nonatomic, weak) id<BoardViewDelegate> delegate;
 
 /* Assumes board is a square */
 - (id) initWithFrame:(CGRect)frame sideCount:(int)side cellSize:(int)cellSize;
@@ -41,6 +48,10 @@ typedef enum SlideDirection {
 
 /* Sliding */
 - (void) slideInDirection:(int)direction;
+
+/* Get random empty */
+- (BOOL) isFull;
+- (CGPoint) randomEmptySpace;
 
 /* State checking */
 - (BOOL) canMove;

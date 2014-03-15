@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BoardView.h"
 
-@interface GameNavigationController : UIViewController {
+@interface GameNavigationController : UIViewController <BoardViewDelegate> {
 	NSMutableArray *_shapeCells;
 	BoardView *_board;
 }
