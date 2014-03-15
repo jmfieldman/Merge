@@ -11,9 +11,17 @@
 
 #define BOARD_MAX_SIDE 8
 
-@interface BoardView : UIView {
+typedef enum SlideDirection {
+	SLIDE_DIR_E = 1,
+	SLIDE_DIR_W = 2,
+	SLIDE_DIR_N = 4,
+	SLIDE_DIR_S = 8,
+} SlideDirection_t;
+
+@interface BoardView : UIView <UIGestureRecognizerDelegate> {
 	
 	ShapeCellView *_cells[BOARD_MAX_SIDE][BOARD_MAX_SIDE];
+	BOOL _mergeCache[BOARD_MAX_SIDE][BOARD_MAX_SIDE];
 	
 	float _cellSize;
 	float _cellPixels;
@@ -30,5 +38,14 @@
 
 /* Animate in a shape */
 - (void) addShape:(int)shapeId at:(CGPoint)point delay:(float)delay duration:(float)duration;
+
+/* Sliding */
+- (void) slideInDirection:(int)direction;
+
+/* State checking */
+- (BOOL) canMove;
+
+/* Gestures */
+- (void)handleSwipeGesture:(UIGestureRecognizer *)gestureRecognizer;
 
 @end

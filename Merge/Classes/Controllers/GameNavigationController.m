@@ -40,7 +40,17 @@ SINGLETON_IMPL(GameNavigationController);
 		#endif
 		
 		_board = [[BoardView alloc] initWithFrame:CGRectMake(50, 70, 200, 200) sideCount:4 cellSize:40];
+		_board.layer.borderWidth = 1;
 		[self.view addSubview:_board];
+		
+		for (int i = 0; i < 4; i++) {
+			UISwipeGestureRecognizer *rec = [[UISwipeGestureRecognizer alloc] initWithTarget:_board action:@selector(handleSwipeGesture:)];
+			rec.direction = 1 << i;
+			[_board addGestureRecognizer:rec];
+		}
+		
+		[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
+		[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
 		
 		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		test.frame = CGRectMake(50, 320, 100, 100);
@@ -56,7 +66,7 @@ SINGLETON_IMPL(GameNavigationController);
 	//	[cell setShape:(cell.shapeId+1)%7 duration:0.2 color:[UIColor colorWithHue:((cell.shapeId+1)%7)/7.0 saturation:0.5 brightness:1 alpha:1]];
 	//}
 	
-	for (int i = 0; i < 100; i++)
+	//for (int i = 0; i < 100; i++)
 	[_board addShape:rand()%6 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0];
 }
 
