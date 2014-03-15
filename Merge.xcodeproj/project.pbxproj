@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		35069D5918D3BC6E006E561B /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35069D5818D3BC6E006E561B /* BoardView.m */; };
+		35069D5C18D49C37006E561B /* ColorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 35069D5B18D49C37006E561B /* ColorTheme.m */; };
 		35722E6B18D21B5B008D71F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6A18D21B5B008D71F9 /* Foundation.framework */; };
 		35722E6D18D21B5B008D71F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6C18D21B5B008D71F9 /* CoreGraphics.framework */; };
 		35722E6F18D21B5B008D71F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6E18D21B5B008D71F9 /* UIKit.framework */; };
@@ -46,6 +47,8 @@
 /* Begin PBXFileReference section */
 		35069D5718D3BC6E006E561B /* BoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardView.h; sourceTree = "<group>"; };
 		35069D5818D3BC6E006E561B /* BoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardView.m; sourceTree = "<group>"; };
+		35069D5A18D49C37006E561B /* ColorTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTheme.h; sourceTree = "<group>"; };
+		35069D5B18D49C37006E561B /* ColorTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTheme.m; sourceTree = "<group>"; };
 		35722E6718D21B5B008D71F9 /* Merge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Merge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35722E6A18D21B5B008D71F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		35722E6C18D21B5B008D71F9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -219,6 +222,8 @@
 				35722EAA18D24895008D71F9 /* SingletonHelper.m */,
 				35722EAB18D24895008D71F9 /* SKBounceAnimation.h */,
 				35722EAC18D24895008D71F9 /* SKBounceAnimation.m */,
+				35069D5A18D49C37006E561B /* ColorTheme.h */,
+				35069D5B18D49C37006E561B /* ColorTheme.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				35722EAE18D24895008D71F9 /* EXRemoteLog.m in Sources */,
 				35722E9D18D2477F008D71F9 /* GameNavigationController.m in Sources */,
 				35069D5918D3BC6E006E561B /* BoardView.m in Sources */,
+				35069D5C18D49C37006E561B /* ColorTheme.m in Sources */,
 				35722E7B18D21B5B008D71F9 /* AppDelegate.m in Sources */,
 				35722E7718D21B5B008D71F9 /* main.m in Sources */,
 				35722EAF18D24895008D71F9 /* MathHelper.m in Sources */,

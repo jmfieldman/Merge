@@ -56,6 +56,7 @@ SINGLETON_IMPL(GameNavigationController);
 	//	[cell setShape:(cell.shapeId+1)%7 duration:0.2 color:[UIColor colorWithHue:((cell.shapeId+1)%7)/7.0 saturation:0.5 brightness:1 alpha:1]];
 	//}
 	
+	for (int i = 0; i < 100; i++)
 	[_board addShape:rand()%6 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0];
 }
 

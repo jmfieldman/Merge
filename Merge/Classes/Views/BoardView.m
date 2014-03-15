@@ -7,6 +7,7 @@
 //
 
 #import "BoardView.h"
+#import "ColorTheme.h"
 
 @implementation BoardView
 
@@ -42,7 +43,7 @@
 	if (_cells[x][y]) return;
 	
 	ShapeCellView *newCell = [[ShapeCellView alloc] initWithFrame:CGRectMake(x * _cellOffset + _spacePixelsHalf, y * _cellOffset + _spacePixelsHalf, _cellSize, _cellSize)];
-	[newCell setShape:shapeId duration:duration color:[UIColor colorWithHue:shapeId/7.0 saturation:0.5 brightness:1 alpha:1]];
+	[newCell setShape:shapeId duration:duration color:[[ColorTheme sharedInstance] colorForShapeId:shapeId]];
 
 	_cells[x][y] = newCell;
 	[self addSubview:newCell];

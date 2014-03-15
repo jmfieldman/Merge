@@ -7,7 +7,7 @@
 //
 
 #import "ShapeCellView.h"
-
+#import "ColorTheme.h"
 
 static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 
@@ -120,8 +120,8 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 		_shapeLayer = [CAShapeLayer layer];
 		_shapeLayer.position = _shapeContainer.center;
 		_shapeLayer.path = ((UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:0]).CGPath;
-		_shapeLayer.fillColor = [UIColor clearColor].CGColor;
-		_currentColor = [UIColor clearColor];
+		_shapeLayer.fillColor = [[ColorTheme sharedInstance] colorForShapeId:0].CGColor;
+		_currentColor = [[ColorTheme sharedInstance] colorForShapeId:0];
 		[_shapeContainer.layer addSublayer:_shapeLayer];
 		
 		_shapeLayer.strokeColor = [UIColor grayColor].CGColor;
