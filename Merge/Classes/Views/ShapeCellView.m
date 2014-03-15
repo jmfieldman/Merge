@@ -15,6 +15,19 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 
 @implementation ShapeCellView
 
++ (UIBezierPath*) polygonWithSides:(int)sides radius:(float)radius yshift:(float)yshift {
+	UIBezierPath *shape = [UIBezierPath bezierPath];
+	float radPerSide = 2*M_PI / sides;
+	float startRad = M_PI/2 - radPerSide/2;
+	float shift = yshift * radius;
+	[shape moveToPoint:CGPointMake(radius*cos(startRad), radius*sin(startRad) + shift)];
+	for (int s = 0; s < sides; s++) {
+		startRad += radPerSide;
+		[shape addLineToPoint:CGPointMake(radius*cos(startRad), radius*sin(startRad) + shift)];
+	}
+	return shape;
+}
+
 + (void) createBezierPaths:(int)width {
 	/* Create main dic if needed */
 	if (!s_shapeBezierPaths) {
@@ -30,6 +43,7 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	//UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-cir_sz/2, -cir_sz/2, cir_sz, cir_sz)];
 	//[paths addObject:circle];
 	
+	#if 0
 	UIBezierPath *triangle = [UIBezierPath bezierPath];
 	[triangle moveToPoint:CGPointMake(0, -halfwidth)];
 	[triangle addLineToPoint:CGPointMake(halfwidth, halfwidth*0.86)];
@@ -97,6 +111,21 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	[octogon addLineToPoint:CGPointMake(oct_rad, oct_diff)];
 	
 	[paths addObject:octogon];
+	#else
+	[paths addObject:[ShapeCellView polygonWithSides:3  radius:halfwidth*1.15 yshift:0.18]];
+	[paths addObject:[ShapeCellView polygonWithSides:4  radius:halfwidth*1.15 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:5  radius:halfwidth      yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:6  radius:halfwidth      yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:7  radius:halfwidth*0.98 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:8  radius:halfwidth*0.98 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:9  radius:halfwidth*0.98 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:10 radius:halfwidth*0.98 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:11 radius:halfwidth*0.98 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:12 radius:halfwidth*0.98 yshift:0.0]];
+	[paths addObject:[ShapeCellView polygonWithSides:13 radius:halfwidth*0.98 yshift:0.0]];
+	
+	
+	#endif
 }
 
 - (id)initWithFrame:(CGRect)frame {

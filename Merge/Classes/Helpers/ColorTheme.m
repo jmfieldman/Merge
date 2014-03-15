@@ -19,9 +19,9 @@ SINGLETON_IMPL(ColorTheme);
 		
 		{
 			NSMutableArray *theme = [NSMutableArray array];
-			#if 0
-			for (int i = 0; i < 7; i++) {
-				[theme addObject:[UIColor colorWithHue:i/6.5 saturation:0.45 brightness:(0.2+i*0.2) alpha:(0.2+i*0.2)]];
+			#if 1
+			for (int i = 0; i < 11; i++) {
+				[theme addObject:[UIColor colorWithHue:(i*2)/13.0 - (int)((i*2)/13.0) saturation:0.45 brightness:1 alpha:1]];
 			}
 			#else
 			float sat = 0.3;
@@ -31,6 +31,8 @@ SINGLETON_IMPL(ColorTheme);
 			[theme addObject:[UIColor colorWithHue:0.33 saturation:sat brightness:1 alpha:1]];
 			[theme addObject:[UIColor colorWithHue:0.55 saturation:sat brightness:1 alpha:1]];
 			[theme addObject:[UIColor colorWithHue:0.70 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.80 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.90 saturation:sat brightness:1 alpha:1]];
 			#endif
 			[_shapeThemes addObject:theme];
 		}

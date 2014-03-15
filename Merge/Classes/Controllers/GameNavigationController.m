@@ -39,9 +39,24 @@ SINGLETON_IMPL(GameNavigationController);
 		}
 		#endif
 		
-		_board = [[BoardView alloc] initWithFrame:CGRectMake(50, 70, 200, 200) sideCount:4 cellSize:40];
-		_board.layer.borderWidth = 1;
+		
+		CAShapeLayer *outline = [CAShapeLayer layer];
+		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-130, -130, 260, 260)	cornerRadius:0].CGPath;
+		outline.fillColor = nil;
+		outline.strokeColor = [UIColor grayColor].CGColor;
+		outline.lineWidth = 1;
+		outline.shadowRadius = 2;
+		outline.shadowOpacity = 0.35;
+		outline.shadowOffset = CGSizeMake(0, 0);
+		outline.shouldRasterize = YES;
+		outline.rasterizationScale = [UIScreen mainScreen].scale;
+		[self.view.layer addSublayer:outline];
+		
+		
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(40, 70, 240, 240) sideCount:4 cellSize:50];
 		[self.view addSubview:_board];
+		
+		outline.position = _board.center;
 		
 		for (int i = 0; i < 4; i++) {
 			UISwipeGestureRecognizer *rec = [[UISwipeGestureRecognizer alloc] initWithTarget:_board action:@selector(handleSwipeGesture:)];
@@ -49,8 +64,12 @@ SINGLETON_IMPL(GameNavigationController);
 			[_board addGestureRecognizer:rec];
 		}
 		
-		[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
-		[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
+		for (int i = 0; i < 11; i++) {
+			[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
+		}
+		//[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
+		//[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
+		
 		_board.delegate = self;
 		
 		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -68,7 +87,7 @@ SINGLETON_IMPL(GameNavigationController);
 	//}
 	
 	//for (int i = 0; i < 100; i++)
-	[_board addShape:rand()%6 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0.25];
+	[_board addShape:rand()%4+3 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0.25];
 }
 
 - (void) boardDidSlide:(BoardView*)boardView {
