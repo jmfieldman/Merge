@@ -47,6 +47,7 @@ SINGLETON_IMPL(ColorTheme);
 }
 
 - (UIColor*) colorForShapeId:(int)shapeId {
+	if (shapeId >= [_shapeThemes[0] count]) return [UIColor blackColor];
 	return (UIColor*)([_shapeThemes[0] objectAtIndex:shapeId]);
 }
 

@@ -94,7 +94,7 @@
 			/* No slide */
 			if (fx == x && fy == y) continue;
 			
-			float duration = 0.6+floatBetween(0, 0.2);
+			float duration = 0.5+floatBetween(0, 0.2);
 			float idamping = 0.7;
 			float velocity = 0.7;
 			
@@ -161,7 +161,7 @@
 		
 	}
 
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 		[_delegate boardDidSlide:self];
 	});
 }

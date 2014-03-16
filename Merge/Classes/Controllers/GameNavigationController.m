@@ -20,7 +20,8 @@ SINGLETON_IMPL(GameNavigationController);
 	if ((self = [super init])) {
 
 		self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-		self.view.backgroundColor = [UIColor colorWithWhite:248/255.0 alpha:1];
+		//self.view.backgroundColor = [UIColor colorWithWhite:248/255.0 alpha:1];
+		self.view.backgroundColor = [UIColor colorWithRed:0xF0/255.0 green:0xEF/255.0 blue:0xEC/255.0 alpha:1];
 		
 		_shapeCells = [NSMutableArray array];
 		#if 0
@@ -41,11 +42,11 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		
 		CAShapeLayer *outline = [CAShapeLayer layer];
-		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-130, -130, 260, 260)	cornerRadius:4].CGPath;
+		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-150, -150, 300, 300)	cornerRadius:4].CGPath;
 		outline.fillColor = nil;
 		outline.strokeColor = [UIColor grayColor].CGColor;
 		outline.lineWidth = 1;
-		outline.opacity = 0.35;
+		outline.opacity = 0.15;
 		outline.shadowRadius = 2;
 		outline.shadowOpacity = 0.35;
 		outline.shadowOffset = CGSizeMake(0, 0);
@@ -54,7 +55,7 @@ SINGLETON_IMPL(GameNavigationController);
 		[self.view.layer addSublayer:outline];
 		
 		
-		_board = [[BoardView alloc] initWithFrame:CGRectMake(40, 70, 240, 240) sideCount:8 cellSize:24];
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(20, 70, 280, 280) sideCount:8 cellSize:30];
 		[self.view addSubview:_board];
 		
 		outline.position = _board.center;
@@ -77,7 +78,7 @@ SINGLETON_IMPL(GameNavigationController);
 		test.frame = CGRectMake(50, 320, 100, 100);
 		[test setTitle:@"test" forState:UIControlStateNormal];
 		[test addTarget:self action:@selector(test:) forControlEvents:UIControlEventTouchUpInside];
-		[self.view addSubview:test];
+		//[self.view addSubview:test];
 	}
 	return self;
 }
