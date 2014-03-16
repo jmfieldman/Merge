@@ -12,6 +12,7 @@
 		352C500D18D6138700996DF1 /* MuseoSansRounded-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500A18D6138700996DF1 /* MuseoSansRounded-300.otf */; };
 		352C500E18D6138700996DF1 /* MuseoSansRounded-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500B18D6138700996DF1 /* MuseoSansRounded-500.otf */; };
 		352C500F18D6138700996DF1 /* MuseoSansRounded-700.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500C18D6138700996DF1 /* MuseoSansRounded-700.otf */; };
+		352C501218D6564800996DF1 /* SwipeCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 352C501118D6564800996DF1 /* SwipeCatcher.m */; };
 		35722E6B18D21B5B008D71F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6A18D21B5B008D71F9 /* Foundation.framework */; };
 		35722E6D18D21B5B008D71F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6C18D21B5B008D71F9 /* CoreGraphics.framework */; };
 		35722E6F18D21B5B008D71F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722E6E18D21B5B008D71F9 /* UIKit.framework */; };
@@ -55,6 +56,8 @@
 		352C500A18D6138700996DF1 /* MuseoSansRounded-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-300.otf"; sourceTree = "<group>"; };
 		352C500B18D6138700996DF1 /* MuseoSansRounded-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-500.otf"; sourceTree = "<group>"; };
 		352C500C18D6138700996DF1 /* MuseoSansRounded-700.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-700.otf"; sourceTree = "<group>"; };
+		352C501018D6564800996DF1 /* SwipeCatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeCatcher.h; sourceTree = "<group>"; };
+		352C501118D6564800996DF1 /* SwipeCatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeCatcher.m; sourceTree = "<group>"; };
 		35722E6718D21B5B008D71F9 /* Merge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Merge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35722E6A18D21B5B008D71F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		35722E6C18D21B5B008D71F9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -252,6 +255,8 @@
 				35722EBA18D24977008D71F9 /* ShapeCellView.m */,
 				35069D5718D3BC6E006E561B /* BoardView.h */,
 				35069D5818D3BC6E006E561B /* BoardView.m */,
+				352C501018D6564800996DF1 /* SwipeCatcher.h */,
+				352C501118D6564800996DF1 /* SwipeCatcher.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -365,6 +370,7 @@
 				35722E7718D21B5B008D71F9 /* main.m in Sources */,
 				35722EAF18D24895008D71F9 /* MathHelper.m in Sources */,
 				35722EB318D24895008D71F9 /* SKBounceAnimation.m in Sources */,
+				352C501218D6564800996DF1 /* SwipeCatcher.m in Sources */,
 				35722EBB18D24977008D71F9 /* ShapeCellView.m in Sources */,
 				35722EB018D24895008D71F9 /* NS+Hashes.m in Sources */,
 			);

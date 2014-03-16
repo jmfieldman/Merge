@@ -55,19 +55,25 @@ SINGLETON_IMPL(GameNavigationController);
 		[self.view.layer addSublayer:outline];
 		
 		
-		_board = [[BoardView alloc] initWithFrame:CGRectMake(20, 70, 280, 280) sideCount:8 cellSize:30];
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(20, 70, 280, 280) sideCount:4 cellSize:60];
 		[self.view addSubview:_board];
 		
 		outline.position = _board.center;
 		
+		/*
 		for (int i = 0; i < 4; i++) {
 			UISwipeGestureRecognizer *rec = [[UISwipeGestureRecognizer alloc] initWithTarget:_board action:@selector(handleSwipeGesture:)];
 			rec.direction = 1 << i;
 			[_board addGestureRecognizer:rec];
 		}
+		 */
+		SwipeCatcher *catcher = [[SwipeCatcher alloc] initWithFrame:self.view.bounds];
+		catcher.delegate = _board;
+		[self.view addSubview:catcher];
+		
 		
 		for (int i = 0; i <= MAX_POLYGON_ID; i++) {
-			[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
+			//[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
 		}
 		//[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
 		//[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
@@ -94,7 +100,7 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) boardDidSlide:(BoardView*)boardView {
 	if (![boardView isFull]) {
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 1; i++) {
 			CGPoint newp = [boardView randomEmptySpace];
 			[boardView addShape:rand()%2 at:newp delay:0 duration:0.25];
 		}

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ShapeCellView.h"
+#import "SwipeCatcher.h"
 
 #define BOARD_MAX_SIDE 8
 
@@ -24,7 +25,7 @@ typedef enum SlideDirection {
 - (void) boardDidSlide:(BoardView*)boardView;
 @end
 
-@interface BoardView : UIView <UIGestureRecognizerDelegate> {
+@interface BoardView : UIView <UIGestureRecognizerDelegate, SwipeCatcherDelegate> {
 	
 	ShapeCellView *_cells[BOARD_MAX_SIDE][BOARD_MAX_SIDE];
 	BOOL _mergeCache[BOARD_MAX_SIDE][BOARD_MAX_SIDE];

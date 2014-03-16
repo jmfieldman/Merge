@@ -268,6 +268,10 @@
 	}
 }
 
+- (void) swipedInDirection:(int)dir {
+	[self slideInDirection:dir];
+}
+
 - (BOOL) isFull {
 	for (int y = 0; y < _sideCount; y++) {
 		for (int x = 0; x < _sideCount; x++) {
