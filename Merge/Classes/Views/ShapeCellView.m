@@ -11,6 +11,7 @@
 
 static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 
+#define MULTIPLIER_FONT @"MuseoSansRounded-700"
 
 
 @implementation ShapeCellView
@@ -171,6 +172,52 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 - (void)setShape:(int)shapeId duration:(float)duration color:(UIColor*)color {
 	
 	_shapeId = shapeId;
+	
+	if (_shapeId > MAX_POLYGON_ID) {
+		if (_shapeLayer) {
+			{
+				/* Shrink the shape layer out */
+				CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+				anim.fromValue = @(1);
+				anim.toValue = @(1.3);
+				anim.duration = duration;
+				//anim.beginTime = CACurrentMediaTime() + duration/5;
+				anim.removedOnCompletion = NO;
+				anim.fillMode = kCAFillModeForwards;
+				anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				anim.autoreverses = YES;
+				[_shapeLayer addAnimation:anim forKey:@"scale"];
+			}
+			{
+				/* Opactiy the shape layer out */
+				CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+				anim.fromValue = @(1);
+				anim.toValue = @(0);
+				anim.duration = duration;
+				//anim.beginTime = CACurrentMediaTime() + duration/5;
+				anim.removedOnCompletion = NO;
+				anim.fillMode = kCAFillModeForwards;
+				anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				[_shapeLayer addAnimation:anim forKey:@"opacity"];
+			}
+			[_shapeLayer performSelector:@selector(removeFromSuperlayer) withObject:nil afterDelay:duration];
+		}
+		
+		if (!_scoreMult) {
+			/* Bring in the multiplier! */
+			_scoreMult = [[UILabel alloc] initWithFrame:self.bounds];
+			_scoreMult.font = [UIFont fontWithName:MULTIPLIER_FONT size:14];
+			_scoreMult.textColor = [UIColor colorWithRed:1/255.0 green:82/255.0 blue:133/255.0 alpha:0.6];
+			_scoreMult.text = @"2x";
+			_scoreMult.textAlignment = NSTextAlignmentCenter;
+			[self addSubview:_scoreMult];
+		}
+		
+		_scoreMult.text = [NSString stringWithFormat:@"%dx", (_shapeId - MAX_POLYGON_ID)+1];
+		
+		return;
+	}
+	
 	
 	if (duration > 0) {
 		CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"path"];

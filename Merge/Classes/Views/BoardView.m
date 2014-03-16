@@ -136,6 +136,18 @@
 				int newShape = _cells[fx][fy].shapeId+1;
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration/3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 					[_cells[fx][fy] setShape:newShape duration:0.25 color:[[ColorTheme sharedInstance] colorForShapeId:newShape]];
+					
+					CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+					anim.fromValue = @(1);
+					anim.toValue = @(1.3);
+					anim.duration = 0.2;
+					//anim.beginTime = CACurrentMediaTime() + duration/5;
+					anim.removedOnCompletion = NO;
+					anim.fillMode = kCAFillModeForwards;
+					anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+					anim.autoreverses = YES;
+					[_cells[fx][fy].layer addAnimation:anim forKey:@"scale"];
+					
 				});
 				
 				/* Merged cells get removed */

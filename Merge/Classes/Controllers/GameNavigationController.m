@@ -41,10 +41,11 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		
 		CAShapeLayer *outline = [CAShapeLayer layer];
-		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-130, -130, 260, 260)	cornerRadius:0].CGPath;
+		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-130, -130, 260, 260)	cornerRadius:4].CGPath;
 		outline.fillColor = nil;
 		outline.strokeColor = [UIColor grayColor].CGColor;
 		outline.lineWidth = 1;
+		outline.opacity = 0.35;
 		outline.shadowRadius = 2;
 		outline.shadowOpacity = 0.35;
 		outline.shadowOffset = CGSizeMake(0, 0);
@@ -53,7 +54,7 @@ SINGLETON_IMPL(GameNavigationController);
 		[self.view.layer addSublayer:outline];
 		
 		
-		_board = [[BoardView alloc] initWithFrame:CGRectMake(40, 70, 240, 240) sideCount:4 cellSize:50];
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(40, 70, 240, 240) sideCount:8 cellSize:24];
 		[self.view addSubview:_board];
 		
 		outline.position = _board.center;
@@ -64,7 +65,7 @@ SINGLETON_IMPL(GameNavigationController);
 			[_board addGestureRecognizer:rec];
 		}
 		
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i <= MAX_POLYGON_ID; i++) {
 			[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
 		}
 		//[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
@@ -92,8 +93,10 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) boardDidSlide:(BoardView*)boardView {
 	if (![boardView isFull]) {
-		CGPoint newp = [boardView randomEmptySpace];
-		[boardView addShape:0 at:newp delay:0 duration:0.25];
+		for (int i = 0; i < 4; i++) {
+			CGPoint newp = [boardView randomEmptySpace];
+			[boardView addShape:rand()%2 at:newp delay:0 duration:0.25];
+		}
 	}
 }
 

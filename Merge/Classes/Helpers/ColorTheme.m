@@ -19,20 +19,25 @@ SINGLETON_IMPL(ColorTheme);
 		
 		{
 			NSMutableArray *theme = [NSMutableArray array];
-			#if 1
+			#if 0
 			for (int i = 0; i < 11; i++) {
-				[theme addObject:[UIColor colorWithHue:(i*2)/13.0 - (int)((i*2)/13.0) saturation:0.45 brightness:1 alpha:1]];
+				[theme addObject:[UIColor colorWithHue:(i*11)/7.0 - (int)((i*11)/7.0) saturation:0.45 brightness:1 alpha:1]];
+			}
+			#elif 0
+			for (int i = 0; i < 11; i++) {
+				[theme addObject:[UIColor colorWithHue:(i / 26.0) saturation:(0.2 + i/20.0) brightness:1 alpha:1]];
 			}
 			#else
-			float sat = 0.3;
+			float sat = 0.39;
 			[theme addObject:[UIColor colorWithHue:0.00 saturation:sat brightness:1 alpha:1]];
-			[theme addObject:[UIColor colorWithHue:0.09 saturation:sat brightness:1 alpha:1]];
-			[theme addObject:[UIColor colorWithHue:0.20 saturation:sat brightness:1 alpha:1]];
-			[theme addObject:[UIColor colorWithHue:0.33 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.18 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.41 saturation:sat brightness:1 alpha:1]];
 			[theme addObject:[UIColor colorWithHue:0.55 saturation:sat brightness:1 alpha:1]];
-			[theme addObject:[UIColor colorWithHue:0.70 saturation:sat brightness:1 alpha:1]];
-			[theme addObject:[UIColor colorWithHue:0.80 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.33 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.62 saturation:sat brightness:1 alpha:1]];
 			[theme addObject:[UIColor colorWithHue:0.90 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.70 saturation:sat brightness:1 alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0.10 saturation:sat brightness:1 alpha:1]];
 			#endif
 			[_shapeThemes addObject:theme];
 		}
