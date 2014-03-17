@@ -55,7 +55,7 @@ SINGLETON_IMPL(GameNavigationController);
 		[self.view.layer addSublayer:outline];
 		
 		
-		_board = [[BoardView alloc] initWithFrame:CGRectMake(20, 70, 280, 280) sideCount:4 cellSize:60];
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(20, 70, 280, 280) sideCount:8 cellSize:30];
 		[self.view addSubview:_board];
 		
 		outline.position = _board.center;
@@ -100,9 +100,9 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) boardDidSlide:(BoardView*)boardView {
 	if (![boardView isFull]) {
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 4; i++) {
 			CGPoint newp = [boardView randomEmptySpace];
-			[boardView addShape:rand()%2 at:newp delay:0 duration:0.25];
+			if (newp.x >= 0 && newp.y >= 0) [boardView addShape:rand()%2 at:newp delay:0 duration:0.25];
 		}
 	}
 }
