@@ -24,87 +24,45 @@ SINGLETON_IMPL(GameNavigationController);
 		self.view.backgroundColor = [UIColor colorWithRed:0xF0/255.0 green:0xEF/255.0 blue:0xEC/255.0 alpha:1];
 		self.view.backgroundColor = [UIColor colorWithRed:0x10/255.0 green:0x20/255.0 blue:0x30/255.0 alpha:1];
 		
+		/* Initialize shape cells array */
 		_shapeCells = [NSMutableArray array];
-		#if 0
-		for (int x = 0; x < 6; x++) for (int y = 0; y < 6; y++) {
-			ShapeCellView *shapeCell = [[ShapeCellView alloc] initWithFrame:CGRectMake(30+(x*45), 50+(y*45), 30, 30)];
-			[shapeCell setShape:rand()%7 duration:0 color:[UIColor redColor]];
-			[self.view addSubview:shapeCell];
-			[_shapeCells addObject:shapeCell];
-		}
 		
-		for (int x = 0; x < 4; x++) for (int y = 0; y < 4; y++) {
-			ShapeCellView *shapeCell = [[ShapeCellView alloc] initWithFrame:CGRectMake(70+(x*60), 50+(y*60), 50, 50)];
-			[shapeCell setShape:rand()%7 duration:0 color:[UIColor redColor]];
-			if (rand()%2==0)[self.view addSubview:shapeCell];
-			[_shapeCells addObject:shapeCell];
-		}
-		#endif
+		/* Initialize board container and board */
+		_boardContainer = [[UIView alloc] initWithFrame:CGRectMake(8, 70, 304, 304)];
+		_boardContainer.backgroundColor = [UIColor colorWithWhite:1 alpha:0.15];
+		_boardContainer.layer.borderColor = [UIColor grayColor].CGColor;
+		_boardContainer.layer.cornerRadius = 8;
+		_boardContainer.layer.shadowRadius = 2;
+		_boardContainer.layer.shadowOpacity = 0.35;
+		_boardContainer.layer.shadowOffset = CGSizeMake(0, 0);
+		[self.view addSubview:_boardContainer];
 		
+		_board = [[BoardView alloc] initWithFrame:CGRectMake(12, 12, 280, 280) sideCount:8 cellSize:30];
+		_board.delegate = self;
+		[_boardContainer addSubview:_board];
 		
-		CAShapeLayer *outline = [CAShapeLayer layer];
-		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-150, -150, 300, 300)	cornerRadius:4].CGPath;
-		outline.fillColor = [UIColor whiteColor].CGColor;
-		outline.strokeColor = [UIColor grayColor].CGColor;
-		outline.lineWidth = 1;
-		outline.opacity = 0.15;
-		outline.shadowRadius = 2;
-		outline.shadowOpacity = 0.35;
-		outline.shadowOffset = CGSizeMake(0, 0);
-		outline.shouldRasterize = YES;
-		outline.rasterizationScale = [UIScreen mainScreen].scale;
-		[self.view.layer addSublayer:outline];
-		
-		
-		_board = [[BoardView alloc] initWithFrame:CGRectMake(20, 70, 280, 280) sideCount:8 cellSize:30];
-		[self.view addSubview:_board];
-		
-		outline.position = _board.center;
-		
-		/*
-		for (int i = 0; i < 4; i++) {
-			UISwipeGestureRecognizer *rec = [[UISwipeGestureRecognizer alloc] initWithTarget:_board action:@selector(handleSwipeGesture:)];
-			rec.direction = 1 << i;
-			[_board addGestureRecognizer:rec];
-		}
-		 */
+		/* This is the swipe catching view */
 		SwipeCatcher *catcher = [[SwipeCatcher alloc] initWithFrame:self.view.bounds];
-		catcher.delegate = _board;
+		catcher.delegate = self;
 		[self.view addSubview:catcher];
 		
-		
+		/* This is a test to pre-populate the board */
+		#if 0
 		for (int i = 0; i <= MAX_POLYGON_ID; i++) {
 			[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
 		}
-		//[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
-		//[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
+		#endif
 		
-		_board.delegate = self;
-		
-		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		test.frame = CGRectMake(50, 320, 100, 100);
-		[test setTitle:@"test" forState:UIControlStateNormal];
-		[test addTarget:self action:@selector(test:) forControlEvents:UIControlEventTouchUpInside];
-		//[self.view addSubview:test];
 	}
 	return self;
 }
 
-//-(UIStatusBarStyle)preferredStatusBarStyle{
-  //  return UIStatusBarStyleLightContent;
-//}
+/* We don't want a status bar */
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
 
-- (void) test:(id)sender {
-	//for (ShapeCellView *cell in _shapeCells) {
-	//	[cell setShape:(cell.shapeId+1)%7 duration:0.2 color:[UIColor colorWithHue:((cell.shapeId+1)%7)/7.0 saturation:0.5 brightness:1 alpha:1]];
-	//}
-	
-	//for (int i = 0; i < 100; i++)
-	[_board addShape:rand()%4+3 at:CGPointMake(rand()%4, rand()%4) delay:0 duration:0.25];
-}
+#pragma mark BoardViewDelegate methods
 
 - (void) boardDidSlide:(BoardView*)boardView {
 	if (![boardView isFull]) {
@@ -113,6 +71,12 @@ SINGLETON_IMPL(GameNavigationController);
 			if (newp.x >= 0 && newp.y >= 0) [boardView addShape:rand()%2 at:newp delay:0 duration:0.25];
 		}
 	}
+}
+
+#pragma mark SwipeCatcherDelegate methods
+
+- (void) swipedInDirection:(int)dir {
+	[_board slideInDirection:dir];
 }
 
 @end

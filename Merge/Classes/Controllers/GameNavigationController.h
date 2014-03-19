@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "BoardView.h"
 
-@interface GameNavigationController : UIViewController <BoardViewDelegate> {
+@interface GameNavigationController : UIViewController <BoardViewDelegate, SwipeCatcherDelegate> {
 	NSMutableArray *_shapeCells;
+	
+	UIView    *_boardContainer;
 	BoardView *_board;
+	
 }
 
 SINGLETON_INTR(GameNavigationController);
