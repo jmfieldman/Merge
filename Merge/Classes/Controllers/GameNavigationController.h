@@ -20,6 +20,13 @@
 	BOOL       _shouldSpawn;
 	int        _spawnBasis;  /* Theoretically this should just equal the number of spawns this game */
 	float      _spawnDelayDecay;
+	
+	
+	/* Stat labels */
+	UILabel   *_statScoreLabel;
+	UILabel   *_statTimeLabel;
+	UILabel   *_nameScoreLabel;
+	UILabel   *_nameTimeLabel;
 }
 
 SINGLETON_INTR(GameNavigationController);

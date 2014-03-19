@@ -39,6 +39,7 @@ SINGLETON_IMPL(GameNavigationController);
 		_boardContainer.layer.shadowRadius = 2;
 		_boardContainer.layer.shadowOpacity = 0.35;
 		_boardContainer.layer.shadowOffset = CGSizeMake(0, 0);
+		_boardContainer.center = self.view.center;
 		[self.view addSubview:_boardContainer];
 		
 		_board = [[BoardView alloc] initWithFrame:CGRectMake(12, 12, 280, 280) sideCount:8 cellSize:30];
@@ -85,7 +86,7 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) startDemoMode {
 	_demoMode = YES;
-	_spawnBasis = 0;
+	_spawnBasis = 100;
 	[_board slideInDirection:SLIDE_DIR_N];
 }
 
