@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define MAX_POLYGON_ID 8
+#define MAX_POLYGON_ID 6
 
 @interface ShapeCellView : UIView {
 	UIView       *_shapeContainer;

@@ -69,11 +69,13 @@
 }
 
 
-- (void) slideInDirection:(int)direction {
+- (NSArray*) slideInDirection:(int)direction {
 	
-	if (!_allowSlide) return;
+	if (!_allowSlide) return nil;
 	
 	memset(_mergeCache, 0, sizeof(_mergeCache));
+	
+	NSMutableArray *mergeReturn = [NSMutableArray array];
 	
 	for (int x = ((direction == SLIDE_DIR_E) ? (_sideCount-1) : 0 );
 		 ((direction == SLIDE_DIR_E) ? (x >= 0) : (x < _sideCount));
@@ -122,6 +124,7 @@
 			} else {
 				/* Have to deal with merging */
 				_mergeCache[fx][fy] = YES;
+				[mergeReturn addObject:[NSValue valueWithCGPoint:CGPointMake(fx, fy)]];
 				
 				/* Need to alpha it out near the merge point */
 				{
@@ -170,6 +173,8 @@
 		_allowSlide = YES;
 		[_delegate boardDidSlide:self];
 	});
+	
+	return mergeReturn;
 }
 
 - (void) calculateSlideInDirection:(int)direction forCoord:(CGPoint)start endsAt:(CGPoint*)end merges:(BOOL*)merges {

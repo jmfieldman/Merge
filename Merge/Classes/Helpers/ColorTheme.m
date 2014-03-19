@@ -30,13 +30,13 @@ SINGLETON_IMPL(ColorTheme);
 			#elif 1
 			float sat = 0.79;
 			float br = 1;
-			[theme addObject:[UIColor colorWithHue:41/360.0 saturation:sat brightness:br alpha:1]];
-			[theme addObject:[UIColor colorWithHue:61/360.0 saturation:sat brightness:br alpha:1]];
-			[theme addObject:[UIColor colorWithHue:148/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:0/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:30/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:60/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:120/360.0 saturation:sat brightness:br alpha:1]];
 			[theme addObject:[UIColor colorWithHue:190/360.0 saturation:sat brightness:br alpha:1]];
-			[theme addObject:[UIColor colorWithHue:219/360.0 saturation:sat brightness:br alpha:1]];
-			[theme addObject:[UIColor colorWithHue:263/360.0 saturation:sat brightness:br alpha:1]];
-			[theme addObject:[UIColor colorWithHue:296/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:230/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:266/360.0 saturation:sat brightness:br alpha:1]];
 			[theme addObject:[UIColor colorWithHue:335/360.0 saturation:sat brightness:br alpha:1]];
 			[theme addObject:[UIColor colorWithHue:9/360.0 saturation:sat brightness:br alpha:1]];
 			#else

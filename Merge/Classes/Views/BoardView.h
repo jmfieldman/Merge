@@ -48,8 +48,8 @@ typedef enum SlideDirection {
 /* Animate in a shape */
 - (void) addShape:(int)shapeId at:(CGPoint)point delay:(float)delay duration:(float)duration;
 
-/* Sliding */
-- (void) slideInDirection:(int)direction;
+/* Sliding - returns array of NSValue w/ cgpoints */
+- (NSArray*) slideInDirection:(int)direction;
 
 /* Get random empty */
 - (BOOL) isFull;

@@ -22,7 +22,7 @@ SINGLETON_IMPL(GameNavigationController);
 		self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
 		//self.view.backgroundColor = [UIColor colorWithWhite:248/255.0 alpha:1];
 		self.view.backgroundColor = [UIColor colorWithRed:0xF0/255.0 green:0xEF/255.0 blue:0xEC/255.0 alpha:1];
-		self.view.backgroundColor = [UIColor colorWithRed:0x20/255.0 green:0x18/255.0 blue:0x30/255.0 alpha:1];
+		self.view.backgroundColor = [UIColor colorWithRed:0x10/255.0 green:0x20/255.0 blue:0x30/255.0 alpha:1];
 		
 		_shapeCells = [NSMutableArray array];
 		#if 0
@@ -74,7 +74,7 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		
 		for (int i = 0; i <= MAX_POLYGON_ID; i++) {
-			//[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
+			[_board addShape:i at:CGPointMake(i&3, i>>2) delay:0 duration:0];
 		}
 		//[_board addShape:2 at:CGPointMake(1, 1) delay:0 duration:0];
 		//[_board addShape:3 at:CGPointMake(1, 2) delay:0 duration:0];
@@ -88,6 +88,13 @@ SINGLETON_IMPL(GameNavigationController);
 		//[self.view addSubview:test];
 	}
 	return self;
+}
+
+//-(UIStatusBarStyle)preferredStatusBarStyle{
+  //  return UIStatusBarStyleLightContent;
+//}
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (void) test:(id)sender {

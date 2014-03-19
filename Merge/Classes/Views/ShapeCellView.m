@@ -40,9 +40,9 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	NSMutableArray *paths = [NSMutableArray array];
 	s_shapeBezierPaths[@(width)] = paths;
 	
-	//float cir_sz = width * 0.86;
-	//UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-cir_sz/2, -cir_sz/2, cir_sz, cir_sz)];
-	//[paths addObject:circle];
+	float cir_sz = width * 0.86;
+	UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-cir_sz/2, -cir_sz/2, cir_sz, cir_sz)];
+	[paths addObject:circle];
 	
 	#if 0
 	UIBezierPath *triangle = [UIBezierPath bezierPath];
@@ -207,10 +207,21 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 		if (!_scoreMult) {
 			/* Bring in the multiplier! */
 			_scoreMult = [[UILabel alloc] initWithFrame:self.bounds];
-			_scoreMult.font = [UIFont fontWithName:MULTIPLIER_FONT size:14];
-			_scoreMult.textColor = [UIColor colorWithRed:1/255.0 green:82/255.0 blue:133/255.0 alpha:0.6];
+			_scoreMult.font = [UIFont fontWithName:MULTIPLIER_FONT size:18];
+			//_scoreMult.textColor = [UIColor colorWithRed:1/255.0 green:82/255.0 blue:133/255.0 alpha:0.6];
+			_scoreMult.textColor = [UIColor colorWithRed:230/255.0 green:245/255.0 blue:255/255.0 alpha:0.9];
+			//_scoreMult.textColor = [UIColor colorWithWhite:1 alpha:0.9];
 			_scoreMult.text = @"2x";
 			_scoreMult.textAlignment = NSTextAlignmentCenter;
+			
+			_scoreMult.layer.shadowColor = [UIColor whiteColor].CGColor;
+			_scoreMult.layer.shadowOffset = CGSizeMake(0, 0);
+			_scoreMult.layer.shadowOpacity = 0.8;
+			_scoreMult.layer.shadowRadius = 1.5;
+			
+			_scoreMult.layer.rasterizationScale = [UIScreen mainScreen].scale;
+			_scoreMult.layer.shouldRasterize = YES;
+			
 			[self addSubview:_scoreMult];
 		}
 		
