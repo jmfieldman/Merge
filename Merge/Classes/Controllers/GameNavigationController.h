@@ -15,6 +15,11 @@
 	UIView    *_boardContainer;
 	BoardView *_board;
 	
+	BOOL       _demoMode;
+	
+	BOOL       _shouldSpawn;
+	int        _spawnBasis;  /* Theoretically this should just equal the number of spawns this game */
+	float      _spawnDelayDecay;
 }
 
 SINGLETON_INTR(GameNavigationController);

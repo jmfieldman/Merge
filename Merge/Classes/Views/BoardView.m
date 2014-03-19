@@ -95,7 +95,7 @@
 			int fx = (int)end.x;
 			int fy = (int)end.y;
 			
-			NSLog(@"end: %d, %d; %f %f", fx, fy, end.x, end.y);
+			//NSLog(@"end: %d, %d; %f %f", fx, fy, end.x, end.y);
 			
 			/* No slide */
 			if (fx == x && fy == y) continue;
@@ -186,7 +186,7 @@
 	if (direction == SLIDE_DIR_W) { dx = -1; }
 	if (direction == SLIDE_DIR_S) { dx = 0; dy = 1; }
 	
-	NSLog(@"%d (%d, %d) [%d %d]", direction, x, y, dx, dy);
+	//NSLog(@"%d (%d, %d) [%d %d]", direction, x, y, dx, dy);
 	
 	*merges = NO;
 	end->x = x;
