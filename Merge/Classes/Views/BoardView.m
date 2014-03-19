@@ -29,6 +29,8 @@
 				_cells[x][y] = nil;
 			}
 		}
+		
+		_allowSlide = YES;
 	}
 	return self;
 }
@@ -68,6 +70,8 @@
 
 
 - (void) slideInDirection:(int)direction {
+	
+	if (!_allowSlide) return;
 	
 	memset(_mergeCache, 0, sizeof(_mergeCache));
 	
@@ -161,7 +165,9 @@
 		
 	}
 
+	_allowSlide = NO;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+		_allowSlide = YES;
 		[_delegate boardDidSlide:self];
 	});
 }

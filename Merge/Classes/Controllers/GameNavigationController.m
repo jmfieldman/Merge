@@ -22,6 +22,7 @@ SINGLETON_IMPL(GameNavigationController);
 		self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
 		//self.view.backgroundColor = [UIColor colorWithWhite:248/255.0 alpha:1];
 		self.view.backgroundColor = [UIColor colorWithRed:0xF0/255.0 green:0xEF/255.0 blue:0xEC/255.0 alpha:1];
+		self.view.backgroundColor = [UIColor colorWithRed:0x20/255.0 green:0x18/255.0 blue:0x30/255.0 alpha:1];
 		
 		_shapeCells = [NSMutableArray array];
 		#if 0
@@ -43,7 +44,7 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		CAShapeLayer *outline = [CAShapeLayer layer];
 		outline.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-150, -150, 300, 300)	cornerRadius:4].CGPath;
-		outline.fillColor = nil;
+		outline.fillColor = [UIColor whiteColor].CGColor;
 		outline.strokeColor = [UIColor grayColor].CGColor;
 		outline.lineWidth = 1;
 		outline.opacity = 0.15;

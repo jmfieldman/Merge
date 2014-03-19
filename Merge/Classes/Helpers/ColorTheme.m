@@ -27,6 +27,18 @@ SINGLETON_IMPL(ColorTheme);
 			for (int i = 0; i < 11; i++) {
 				[theme addObject:[UIColor colorWithHue:(i / 26.0) saturation:(0.2 + i/20.0) brightness:1 alpha:1]];
 			}
+			#elif 1
+			float sat = 0.79;
+			float br = 1;
+			[theme addObject:[UIColor colorWithHue:41/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:61/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:148/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:190/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:219/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:263/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:296/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:335/360.0 saturation:sat brightness:br alpha:1]];
+			[theme addObject:[UIColor colorWithHue:9/360.0 saturation:sat brightness:br alpha:1]];
 			#else
 			float sat = 0.39;
 			[theme addObject:[UIColor colorWithHue:0.00 saturation:sat brightness:1 alpha:1]];

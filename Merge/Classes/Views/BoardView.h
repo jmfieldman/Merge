@@ -40,6 +40,7 @@ typedef enum SlideDirection {
 
 @property (nonatomic, readonly) int sideCount;
 @property (nonatomic, weak) id<BoardViewDelegate> delegate;
+@property (nonatomic, readonly) BOOL allowSlide;
 
 /* Assumes board is a square */
 - (id) initWithFrame:(CGRect)frame sideCount:(int)side cellSize:(int)cellSize;
