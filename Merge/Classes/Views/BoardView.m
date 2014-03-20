@@ -68,6 +68,14 @@
 	
 }
 
+- (void) animateClearBoard {
+	for (int i = 0; i < BOARD_MAX_SIDE; i++) {
+		for (int j = 0; j < BOARD_MAX_SIDE; j++) {
+		#error fuck
+		}
+	}
+}
+
 
 - (NSArray*) slideInDirection:(int)direction {
 	

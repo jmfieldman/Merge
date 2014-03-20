@@ -24,5 +24,7 @@
 	#import "SingletonHelper.h"
 	#import "SKBounceAnimation.h"
 	#import "MathHelper.h"
+
+	#import "UIButton+BouncyPress.h"
 	
 #endif

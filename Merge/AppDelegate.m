@@ -23,6 +23,9 @@
     self.window.backgroundColor = [UIColor whiteColor];
 	self.window.rootViewController = [GameNavigationController sharedInstance];
     [self.window makeKeyAndVisible];
+	
+	[[GameNavigationController sharedInstance] restoreSavedState];
+	
     return YES;
 }
 

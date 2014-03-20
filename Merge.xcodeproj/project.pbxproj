@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		35069D5918D3BC6E006E561B /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35069D5818D3BC6E006E561B /* BoardView.m */; };
 		35069D5C18D49C37006E561B /* ColorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 35069D5B18D49C37006E561B /* ColorTheme.m */; };
+		351ABF4718DB7E4700441829 /* UIButton+BouncyPress.m in Sources */ = {isa = PBXBuildFile; fileRef = 351ABF4618DB7E4700441829 /* UIButton+BouncyPress.m */; };
 		352C500D18D6138700996DF1 /* MuseoSansRounded-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500A18D6138700996DF1 /* MuseoSansRounded-300.otf */; };
 		352C500E18D6138700996DF1 /* MuseoSansRounded-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500B18D6138700996DF1 /* MuseoSansRounded-500.otf */; };
 		352C500F18D6138700996DF1 /* MuseoSansRounded-700.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500C18D6138700996DF1 /* MuseoSansRounded-700.otf */; };
@@ -53,6 +54,8 @@
 		35069D5818D3BC6E006E561B /* BoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardView.m; sourceTree = "<group>"; };
 		35069D5A18D49C37006E561B /* ColorTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTheme.h; sourceTree = "<group>"; };
 		35069D5B18D49C37006E561B /* ColorTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTheme.m; sourceTree = "<group>"; };
+		351ABF4518DB7E4700441829 /* UIButton+BouncyPress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+BouncyPress.h"; sourceTree = "<group>"; };
+		351ABF4618DB7E4700441829 /* UIButton+BouncyPress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+BouncyPress.m"; sourceTree = "<group>"; };
 		352C500A18D6138700996DF1 /* MuseoSansRounded-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-300.otf"; sourceTree = "<group>"; };
 		352C500B18D6138700996DF1 /* MuseoSansRounded-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-500.otf"; sourceTree = "<group>"; };
 		352C500C18D6138700996DF1 /* MuseoSansRounded-700.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-700.otf"; sourceTree = "<group>"; };
@@ -244,6 +247,8 @@
 				35722EAC18D24895008D71F9 /* SKBounceAnimation.m */,
 				35069D5A18D49C37006E561B /* ColorTheme.h */,
 				35069D5B18D49C37006E561B /* ColorTheme.m */,
+				351ABF4518DB7E4700441829 /* UIButton+BouncyPress.h */,
+				351ABF4618DB7E4700441829 /* UIButton+BouncyPress.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -361,6 +366,7 @@
 			files = (
 				35722EB218D24895008D71F9 /* SingletonHelper.m in Sources */,
 				35722EB118D24895008D71F9 /* PersistentDictionary.m in Sources */,
+				351ABF4718DB7E4700441829 /* UIButton+BouncyPress.m in Sources */,
 				35722EAD18D24895008D71F9 /* EXDebug.m in Sources */,
 				35722EAE18D24895008D71F9 /* EXRemoteLog.m in Sources */,
 				35722E9D18D2477F008D71F9 /* GameNavigationController.m in Sources */,

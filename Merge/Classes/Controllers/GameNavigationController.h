@@ -16,19 +16,37 @@
 	BoardView *_board;
 	
 	BOOL       _demoMode;
+	BOOL       _isPlaying;
+	BOOL       _isPaused;
 	
 	BOOL       _shouldSpawn;
 	int        _spawnBasis;  /* Theoretically this should just equal the number of spawns this game */
 	float      _spawnDelayDecay;
 	
+	int        _spawnsWhileSliding;
+	
+	int        _score;
+	
+	double     _elapsedTime;
+	double     _lastTimeCheck;
+	
+	SwipeCatcher *_swipeCatcher;
 	
 	/* Stat labels */
 	UILabel   *_statScoreLabel;
 	UILabel   *_statTimeLabel;
 	UILabel   *_nameScoreLabel;
 	UILabel   *_nameTimeLabel;
+	
+	/* Menu items */
+	UIButton  *_playButton;
+	UIButton  *_scoresButton;
+	UIButton  *_instrButton;
+	BOOL       _menuShown;
 }
 
 SINGLETON_INTR(GameNavigationController);
+
+- (void) restoreSavedState;
 
 @end

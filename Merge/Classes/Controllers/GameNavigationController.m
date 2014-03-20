@@ -8,6 +8,10 @@
 
 #import "GameNavigationController.h"
 
+#define SCORE_LABEL_FONT @"MuseoSansRounded-300"
+#define SCORE_VALUE_FONT @"MuseoSansRounded-500"
+#define MENU_FONT        @"MuseoSansRounded-700"
+
 #define SPAWN_DELAY_HALF_LIFE 50
 #define SPAWN_INITIAL_DELAY   1.0
 #define SPAWN_RATE_MIN        0.1
@@ -48,9 +52,10 @@ SINGLETON_IMPL(GameNavigationController);
 		[_boardContainer addSubview:_board];
 		
 		/* This is the swipe catching view */
-		SwipeCatcher *catcher = [[SwipeCatcher alloc] initWithFrame:self.view.bounds];
-		catcher.delegate = self;
-		[self.view addSubview:catcher];
+		_swipeCatcher = [[SwipeCatcher alloc] initWithFrame:self.view.bounds];
+		_swipeCatcher.delegate = self;
+		_swipeCatcher.userInteractionEnabled = NO;
+		[self.view addSubview:_swipeCatcher];
 		
 		/* This is a test to pre-populate the board */
 		#if 0
@@ -59,17 +64,149 @@ SINGLETON_IMPL(GameNavigationController);
 		}
 		#endif
 		
+		#if 0
 		UIButton *test = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		[test setTitle:@"test" forState:UIControlStateNormal];
 		[test addTarget:self action:@selector(test:) forControlEvents:UIControlEventTouchUpInside];
 		test.frame = CGRectMake(0, 400, 80, 80);
-		//[self.view addSubview:test];
+		[self.view addSubview:test];
+		#endif
 		
 		_spawnBasis  = 10;
 		_spawnDelayDecay = (-0.6931471) / SPAWN_DELAY_HALF_LIFE;
 		
 		[self startDemoMode];
 		[self beginSpawning];
+		
+		
+		/* Score fields */
+		_nameScoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
+		_nameScoreLabel.font = [UIFont fontWithName:SCORE_LABEL_FONT size:14];
+		_nameScoreLabel.text = @"score";
+		_nameScoreLabel.alpha = 0.65;
+		_nameScoreLabel.textAlignment = NSTextAlignmentRight;
+		_nameScoreLabel.textColor = [UIColor whiteColor];
+		_nameScoreLabel.layer.shadowOpacity = 1;
+		_nameScoreLabel.layer.shadowColor = [UIColor whiteColor].CGColor;
+		_nameScoreLabel.layer.shadowOffset = CGSizeMake(0, 0);
+		_nameScoreLabel.layer.shadowRadius = 2;
+		_nameScoreLabel.layer.shouldRasterize = YES;
+		_nameScoreLabel.layer.rasterizationScale = [UIScreen mainScreen].scale;
+		[self.view addSubview:_nameScoreLabel];
+		
+		_nameTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(275, 0, 50, 40)];
+		_nameTimeLabel.font = _nameScoreLabel.font;
+		_nameTimeLabel.text = @"time";
+		_nameTimeLabel.alpha = _nameScoreLabel.alpha;
+		_nameTimeLabel.textAlignment = NSTextAlignmentLeft;
+		_nameTimeLabel.textColor = [UIColor whiteColor];
+		_nameTimeLabel.layer.shadowOpacity = 1;
+		_nameTimeLabel.layer.shadowColor = [UIColor whiteColor].CGColor;
+		_nameTimeLabel.layer.shadowOffset = CGSizeMake(0, 0);
+		_nameTimeLabel.layer.shadowRadius = 2;
+		_nameTimeLabel.layer.shouldRasterize = YES;
+		_nameTimeLabel.layer.rasterizationScale = [UIScreen mainScreen].scale;
+		[self.view addSubview:_nameTimeLabel];
+		
+		_statScoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, 100, 36)];
+		_statScoreLabel.font = [UIFont fontWithName:SCORE_VALUE_FONT size:20];
+		_statScoreLabel.text = @"0";
+		_statScoreLabel.alpha = 1;
+		_statScoreLabel.textAlignment = NSTextAlignmentLeft;
+		_statScoreLabel.textColor = [UIColor whiteColor];
+		_statScoreLabel.layer.shadowOpacity = 1;
+		_statScoreLabel.layer.shadowColor = [UIColor whiteColor].CGColor;
+		_statScoreLabel.layer.shadowOffset = CGSizeMake(0, 0);
+		_statScoreLabel.layer.shadowRadius = 2;
+		_statScoreLabel.layer.shouldRasterize = YES;
+		_statScoreLabel.layer.rasterizationScale = [UIScreen mainScreen].scale;
+		[self.view addSubview:_statScoreLabel];
+		
+		_statTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 0, 100, 36)];
+		_statTimeLabel.font = [UIFont fontWithName:SCORE_VALUE_FONT size:20];
+		_statTimeLabel.text = @"0:00";
+		_statTimeLabel.alpha = 1;
+		_statTimeLabel.textAlignment = NSTextAlignmentRight;
+		_statTimeLabel.textColor = [UIColor whiteColor];
+		_statTimeLabel.layer.shadowOpacity = 1;
+		_statTimeLabel.layer.shadowColor = [UIColor whiteColor].CGColor;
+		_statTimeLabel.layer.shadowOffset = CGSizeMake(0, 0);
+		_statTimeLabel.layer.shadowRadius = 2;
+		_statTimeLabel.layer.shouldRasterize = YES;
+		_statTimeLabel.layer.rasterizationScale = [UIScreen mainScreen].scale;
+		[self.view addSubview:_statTimeLabel];
+		
+		
+		_playButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_playButton.frame = CGRectMake(0, _boardContainer.frame.origin.y + 40, 320, 60);
+		_playButton.backgroundColor = [UIColor clearColor];
+		_playButton.alpha = 0;
+		[_playButton addTarget:self action:@selector(pressedPlay:) forControlEvents:UIControlEventTouchUpInside];
+		[_playButton makeBouncy];
+		[self.view addSubview:_playButton];
+		{
+			UILabel *label = [[UILabel alloc] initWithFrame:_playButton.bounds];
+			label.text = @"PLAY";
+			label.font = [UIFont fontWithName:MENU_FONT size:28];
+			label.textAlignment = NSTextAlignmentCenter;
+			label.userInteractionEnabled = NO;
+			label.textColor = [UIColor whiteColor];
+			label.layer.shadowOpacity = 1;
+			label.layer.shadowColor = [UIColor whiteColor].CGColor;
+			label.layer.shadowOffset = CGSizeMake(0, 0);
+			label.layer.shadowRadius = 2;
+			label.layer.shouldRasterize = YES;
+			label.layer.rasterizationScale = [UIScreen mainScreen].scale;
+			[_playButton addSubview:label];
+		}
+		
+		_scoresButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_scoresButton.frame = CGRectMake(0, _playButton.frame.origin.y + _playButton.frame.size.height, 320, _playButton.frame.size.height);
+		_scoresButton.backgroundColor = [UIColor clearColor];
+		_scoresButton.alpha = 0;
+		[_scoresButton addTarget:self action:@selector(pressedScores:) forControlEvents:UIControlEventTouchUpInside];
+		[_scoresButton makeBouncy];
+		[self.view addSubview:_scoresButton];
+		{
+			UILabel *label = [[UILabel alloc] initWithFrame:_scoresButton.bounds];
+			label.text = @"HIGH SCORES";
+			label.font = [UIFont fontWithName:MENU_FONT size:28];
+			label.textAlignment = NSTextAlignmentCenter;
+			label.userInteractionEnabled = NO;
+			label.textColor = [UIColor whiteColor];
+			label.layer.shadowOpacity = 1;
+			label.layer.shadowColor = [UIColor whiteColor].CGColor;
+			label.layer.shadowOffset = CGSizeMake(0, 0);
+			label.layer.shadowRadius = 2;
+			label.layer.shouldRasterize = YES;
+			label.layer.rasterizationScale = [UIScreen mainScreen].scale;
+			[_scoresButton addSubview:label];
+		}
+		
+		_instrButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_instrButton.frame = CGRectMake(0, _scoresButton.frame.origin.y + _scoresButton.frame.size.height, 320, _scoresButton.frame.size.height);
+		_instrButton.backgroundColor = [UIColor clearColor];
+		_instrButton.alpha = 0;
+		[_instrButton addTarget:self action:@selector(pressedInstr:) forControlEvents:UIControlEventTouchUpInside];
+		[_instrButton makeBouncy];
+		[self.view addSubview:_instrButton];
+		{
+			UILabel *label = [[UILabel alloc] initWithFrame:_instrButton.bounds];
+			label.text = @"INSTRUCTIONS";
+			label.font = [UIFont fontWithName:MENU_FONT size:28];
+			label.textAlignment = NSTextAlignmentCenter;
+			label.userInteractionEnabled = NO;
+			label.textColor = [UIColor whiteColor];
+			label.layer.shadowOpacity = 1;
+			label.layer.shadowColor = [UIColor whiteColor].CGColor;
+			label.layer.shadowOffset = CGSizeMake(0, 0);
+			label.layer.shadowRadius = 2;
+			label.layer.shouldRasterize = YES;
+			label.layer.rasterizationScale = [UIScreen mainScreen].scale;
+			[_instrButton addSubview:label];
+		}
+		
+		[self hideMenu];
 	}
 	return self;
 }
@@ -117,26 +254,122 @@ SINGLETON_IMPL(GameNavigationController);
 	});
 }
 
-- (void) test:(id)sender {
-	static int foo = 0;
+- (void) restoreSavedState {
+	[self showMenu];
+}
+
+- (void) pressedPlay:(id)sender {
+	if (!_isPlaying) {
+		/* Start game */
+		[self hideMenu];
+	}
 	
-	[UIView animateWithDuration:0.45
-						  delay:0
-		 usingSpringWithDamping:0.7
-		  initialSpringVelocity:0.7
-						options:0
-					 animations:^{
-						 if (foo) {
-							 _boardContainer.transform = CGAffineTransformIdentity;
-						 } else {
-							 _boardContainer.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(70, -65), 0.4, 0.4);
-						 }
-						 foo = !foo;
-					 } completion:^(BOOL finished) {
-						 
-					 }];
+	/* Disable demo */
+	_demoMode = NO;
+	
+	/* Reset spawn basis */
+	_spawnBasis = 0;
+	
+	/* Reset score */
+	_score = 0;
+	[self updateScoreLabel];
+	
+	/* Timing */
+	_elapsedTime = 0;
+	_lastTimeCheck = CFAbsoluteTimeGetCurrent();
+	[self updateTimeLabel];
+	
+	/* Enable catched */
+	_swipeCatcher.userInteractionEnabled = YES;
+	
+	/* Set that we're playing */
+	_isPlaying = YES;
+	
+	/* Animate board into alpha state */
+	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_board.alpha = 1;
+	} completion:nil];
+	
+	/* Kill all squares in demo/old game */
 	
 }
+
+- (void) pressedScores:(id)sender {
+	
+}
+
+- (void) pressedInstr:(id)sender {
+	
+}
+
+- (void) updateScoreLabel {
+	_statScoreLabel.text = [NSString stringWithFormat:@"%d", _score];
+}
+
+- (void) updateTimeLabel {
+	int curSec = (int)_elapsedTime;
+	_statTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", curSec / 60, curSec % 60 ];
+}
+
+- (void) showMenu {
+	if (_menuShown) return;
+	_menuShown = YES;
+	
+	const float dur = 0.75;
+	const float del = 0.05;
+	
+	_playButton.transform   = CGAffineTransformMakeScale(0.8, 0.8);
+	_scoresButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
+	_instrButton.transform  = CGAffineTransformMakeScale(0.8, 0.8);
+	
+	_playButton.userInteractionEnabled   = YES;
+	_scoresButton.userInteractionEnabled = YES;
+	_instrButton.userInteractionEnabled  = YES;
+	
+	[UIView animateWithDuration:dur delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0.7 options:0 animations:^{
+		_playButton.alpha = 1;
+		_playButton.transform = CGAffineTransformIdentity;
+	} completion:nil];
+	
+	[UIView animateWithDuration:dur delay:del usingSpringWithDamping:0.7 initialSpringVelocity:0.7 options:0 animations:^{
+		_scoresButton.alpha = 1;
+		_scoresButton.transform = CGAffineTransformIdentity;
+	} completion:nil];
+	
+	[UIView animateWithDuration:dur delay:del*2 usingSpringWithDamping:0.7 initialSpringVelocity:0.7 options:0 animations:^{
+		_instrButton.alpha = 1;
+		_instrButton.transform = CGAffineTransformIdentity;
+	} completion:nil];
+}
+
+- (void) hideMenu {
+	if (!_menuShown) return;
+	_menuShown = NO;
+	
+	
+	const float dur = 0.35;
+	const float del = 0.05;
+	
+	_playButton.userInteractionEnabled   = NO;
+	_scoresButton.userInteractionEnabled = NO;
+	_instrButton.userInteractionEnabled  = NO;
+	
+	[UIView animateWithDuration:dur delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0.7 options:0 animations:^{
+		_playButton.alpha = 0;
+		_playButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
+	} completion:nil];
+	
+	[UIView animateWithDuration:dur delay:del usingSpringWithDamping:0.7 initialSpringVelocity:0.7 options:0 animations:^{
+		_scoresButton.alpha = 0;
+		_scoresButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
+	} completion:nil];
+	
+	[UIView animateWithDuration:dur delay:del*2 usingSpringWithDamping:0.7 initialSpringVelocity:0.7 options:0 animations:^{
+		_instrButton.alpha = 0;
+		_instrButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
+	} completion:nil];
+}
+
 
 #pragma mark BoardViewDelegate methods
 
