@@ -71,7 +71,19 @@
 - (void) animateClearBoard {
 	for (int i = 0; i < BOARD_MAX_SIDE; i++) {
 		for (int j = 0; j < BOARD_MAX_SIDE; j++) {
-		#error fuck
+			UIView *cell = _cells[i][j];
+			_cells[i][j] = nil;
+			float delay = floatBetween(0, 0.3);
+			[UIView animateWithDuration:0.35
+								  delay:delay
+								options:UIViewAnimationOptionCurveEaseInOut
+							 animations:^{
+								 cell.alpha = 0;
+								 float scale = floatBetween(1.2, 1.4);
+								 cell.transform = CGAffineTransformMakeScale(scale, scale);
+							 } completion:^(BOOL finished) {
+								 [cell removeFromSuperview];
+							 }];
 		}
 	}
 }
@@ -150,7 +162,9 @@
 				/* Change shape of merged-into */
 				int newShape = _cells[fx][fy].shapeId+1;
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration/3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
-					[_cells[fx][fy] setShape:newShape duration:0.25 color:[[ColorTheme sharedInstance] colorForShapeId:newShape]];
+					if (newShape != (SHAPE_ID_BOMB+1)) {
+						[_cells[fx][fy] setShape:newShape duration:0.25 color:[[ColorTheme sharedInstance] colorForShapeId:newShape]];
+					}
 					
 					CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
 					anim.fromValue = @(1);
@@ -201,6 +215,11 @@
 	end->y = y;
 	
 	int cshape = _cells[x][y].shapeId;
+	
+	/* Blockers */
+	if (cshape == SHAPE_ID_BLOCKER) {
+		cshape = -1111;
+	}
 	
 	do {
 		switch (direction) {
@@ -327,6 +346,36 @@
 		[output appendString:@"\n"];
 	}
 	NSLog(@"\n%@", output);
+}
+
+- (void) animateBombAtPoint:(CGPoint)p {
+	int x = p.x;
+	int y = p.y;
+	for (int i = (x-1); i <= (x+1); i++) {
+		for (int j = (y-1); j <= (y+1); j++) {
+			if (i < 0 || j < 0 || i >= BOARD_MAX_SIDE || j >= BOARD_MAX_SIDE) continue;
+			if (!_cells[i][j]) continue;
+			
+			ShapeCellView *cell = _cells[i][j];
+			_cells[i][j] = nil;
+			[UIView animateWithDuration:0.15
+								  delay:0
+								options:UIViewAnimationOptionCurveEaseInOut
+							 animations:^{
+								 cell.alpha = 0;
+								 float scale = floatBetween(1.2, 1.4);
+								 cell.transform = CGAffineTransformMakeScale(scale, scale);
+							 } completion:^(BOOL finished) {
+								 [cell removeFromSuperview];
+							 }];
+		}
+	}
+}
+
+- (int) shapeIdAtPoint:(CGPoint)p {
+	ShapeCellView *cell = _cells[(int)p.x][(int)p.y];
+	if (!cell) return -1;
+	return cell.shapeId;
 }
 
 @end

@@ -174,7 +174,19 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	
 	_shapeId = shapeId;
 	
-	if (_shapeId > MAX_POLYGON_ID) {
+	UIBezierPath *newshape = nil;
+	
+	if (_shapeId == SHAPE_ID_BLOCKER) {
+		color = [UIColor whiteColor];
+		newshape = (UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:2];
+	}
+	
+	if (_shapeId == SHAPE_ID_BOMB) {
+		color = [UIColor blackColor];
+		newshape = (UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:0];
+	}
+	
+	if (_shapeId > MAX_POLYGON_ID && _shapeId <= MAX_BONUS_ID) {
 		if (_shapeLayer) {
 			{
 				/* Shrink the shape layer out */
@@ -230,11 +242,14 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 		return;
 	}
 	
+	if (!newshape) {
+		newshape = (UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:shapeId];
+	}
 	
 	if (duration > 0) {
 		CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"path"];
 		[anim setFromValue:(__bridge id)_shapeLayer.path];
-		[anim setToValue:(__bridge id)((UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:shapeId]).CGPath];
+		[anim setToValue:(__bridge id)(newshape).CGPath];
 		[anim setDuration:duration];
 		anim.removedOnCompletion = NO;
 		anim.fillMode = kCAFillModeForwards;
@@ -253,7 +268,7 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 		[_shapeLayer addAnimation:anim forKey:@"fillColor"];
 	}
 	
-	_shapeLayer.path = ((UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:shapeId]).CGPath;
+	_shapeLayer.path = (newshape).CGPath;
 	_currentColor = color;
 }
 

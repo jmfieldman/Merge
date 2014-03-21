@@ -64,4 +64,10 @@ typedef enum SlideDirection {
 /* Animate clear board */
 - (void) animateClearBoard;
 
+/* Animate bomb effect */
+- (void) animateBombAtPoint:(CGPoint)p;
+
+/* What's at a coord? */
+- (int) shapeIdAtPoint:(CGPoint)p;
+
 @end

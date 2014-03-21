@@ -14,7 +14,11 @@
 
 #define SPAWN_DELAY_HALF_LIFE 50
 #define SPAWN_INITIAL_DELAY   1.0
-#define SPAWN_RATE_MIN        0.1
+#define SPAWN_RATE_MIN        0.2
+
+#define SPECIAL_RATE 0.15
+#define BLOCKER_RATE 0.4
+#define BOMB_RATE    0.6
 
 @interface GameNavigationController ()
 
@@ -241,11 +245,24 @@ SINGLETON_IMPL(GameNavigationController);
 	if (!_shouldSpawn) return;
 	
 	if (![_board isFull]) {
+		int newShapeId = 0;
+		float special = floatBetween(0, 1);
+		if (!_demoMode && special < SPECIAL_RATE) {
+			special = floatBetween(0, 1);
+			if (special < BLOCKER_RATE) newShapeId = SHAPE_ID_BLOCKER;
+			else {
+				special -= BLOCKER_RATE;
+				if (special < BOMB_RATE) {
+					newShapeId = SHAPE_ID_BOMB;
+				}
+			}
+		}
+		
 		CGPoint newp = [_board randomEmptySpace];
-		[_board addShape:0 at:newp delay:0 duration:0.25];
+		[_board addShape:newShapeId at:newp delay:0 duration:0.25];
 	}
 	
-	if (_demoMode) _spawnBasis++;
+	_spawnBasis++;
 	
 	/* Trigger next spawn */
 	NSLog(@"next spawn: %f", [self currentSpawnDelay]);
@@ -291,7 +308,7 @@ SINGLETON_IMPL(GameNavigationController);
 	} completion:nil];
 	
 	/* Kill all squares in demo/old game */
-	
+	[_board animateClearBoard];
 }
 
 - (void) pressedScores:(id)sender {
@@ -370,6 +387,35 @@ SINGLETON_IMPL(GameNavigationController);
 	} completion:nil];
 }
 
+- (void) applyEarthquakeToView:(UIView*)v duration:(float)duration delay:(float)delay offset:(int)offset {
+	CAKeyframeAnimation *transanimation;
+	transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+	transanimation.duration = duration;
+	transanimation.cumulative = YES;
+	int offhalf = offset / 2;
+	
+	int numFrames = 10;
+	NSMutableArray *positions = [NSMutableArray array];
+	NSMutableArray *keytimes  = [NSMutableArray array];
+	NSMutableArray *timingfun = [NSMutableArray array];
+	[positions addObject:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+	[keytimes addObject:@(0)];
+	for (int i = 0; i < numFrames; i++) {
+		[positions addObject:[NSValue valueWithCATransform3D:CATransform3DMakeTranslation(rand()%offset-offhalf, rand()%offset-offhalf,0)]];
+		[keytimes addObject:@( ((float)(i+1))/(numFrames+2) )];
+		[timingfun addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+	}
+	[positions addObject:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+	[keytimes addObject:@(1)];
+	[timingfun addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+	
+	transanimation.values = positions;
+	transanimation.keyTimes = keytimes;
+	transanimation.calculationMode = kCAAnimationCubic;
+	transanimation.timingFunctions = timingfun;
+	transanimation.beginTime = CACurrentMediaTime() + delay;
+	[v.layer addAnimation:transanimation forKey:nil];
+}
 
 #pragma mark BoardViewDelegate methods
 
@@ -393,7 +439,25 @@ SINGLETON_IMPL(GameNavigationController);
 #pragma mark SwipeCatcherDelegate methods
 
 - (void) swipedInDirection:(int)dir {
-	[_board slideInDirection:dir];
+	NSArray *merges = [_board slideInDirection:dir];
+	
+	int bomb_count = 0;
+	for (NSValue *merge in merges) {
+		CGPoint p = [merge CGPointValue];
+		int shapeid = [_board shapeIdAtPoint:p];
+		if (shapeid == SHAPE_ID_BOMB) {
+			bomb_count++;
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+				[_board animateBombAtPoint:p];
+			});
+			
+			
+			
+		}
+	}
+	
+	if (bomb_count) [self applyEarthquakeToView:_boardContainer duration:0.3+(bomb_count*0.1) delay:0.2 offset:10+(bomb_count*2)];
 }
 
 @end
