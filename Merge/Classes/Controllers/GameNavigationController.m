@@ -441,6 +441,8 @@ SINGLETON_IMPL(GameNavigationController);
 - (void) swipedInDirection:(int)dir {
 	NSArray *merges = [_board slideInDirection:dir];
 	
+	int total_score_update = 0;
+	
 	int bomb_count = 0;
 	for (NSValue *merge in merges) {
 		CGPoint p = [merge CGPointValue];
@@ -451,11 +453,15 @@ SINGLETON_IMPL(GameNavigationController);
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 				[_board animateBombAtPoint:p];
 			});
-			
-			
-			
+			continue;
 		}
+		
+		total_score_update += (1 << [_board shapeIdAtPoint:p]);
 	}
+	
+	total_score_update *= [merges count];
+	_score += total_score_update;
+	[self updateScoreLabel];
 	
 	if (bomb_count) [self applyEarthquakeToView:_boardContainer duration:0.3+(bomb_count*0.1) delay:0.2 offset:10+(bomb_count*2)];
 }
