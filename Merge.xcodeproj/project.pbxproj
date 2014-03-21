@@ -10,6 +10,8 @@
 		35069D5918D3BC6E006E561B /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35069D5818D3BC6E006E561B /* BoardView.m */; };
 		35069D5C18D49C37006E561B /* ColorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 35069D5B18D49C37006E561B /* ColorTheme.m */; };
 		351ABF4718DB7E4700441829 /* UIButton+BouncyPress.m in Sources */ = {isa = PBXBuildFile; fileRef = 351ABF4618DB7E4700441829 /* UIButton+BouncyPress.m */; };
+		351ABF4C18DCA7F600441829 /* tspark.png in Resources */ = {isa = PBXBuildFile; fileRef = 351ABF4A18DCA7F600441829 /* tspark.png */; };
+		351ABF4D18DCA7F600441829 /* tspark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 351ABF4B18DCA7F600441829 /* tspark@2x.png */; };
 		352C500D18D6138700996DF1 /* MuseoSansRounded-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500A18D6138700996DF1 /* MuseoSansRounded-300.otf */; };
 		352C500E18D6138700996DF1 /* MuseoSansRounded-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500B18D6138700996DF1 /* MuseoSansRounded-500.otf */; };
 		352C500F18D6138700996DF1 /* MuseoSansRounded-700.otf in Resources */ = {isa = PBXBuildFile; fileRef = 352C500C18D6138700996DF1 /* MuseoSansRounded-700.otf */; };
@@ -56,6 +58,8 @@
 		35069D5B18D49C37006E561B /* ColorTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTheme.m; sourceTree = "<group>"; };
 		351ABF4518DB7E4700441829 /* UIButton+BouncyPress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+BouncyPress.h"; sourceTree = "<group>"; };
 		351ABF4618DB7E4700441829 /* UIButton+BouncyPress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+BouncyPress.m"; sourceTree = "<group>"; };
+		351ABF4A18DCA7F600441829 /* tspark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tspark.png; sourceTree = "<group>"; };
+		351ABF4B18DCA7F600441829 /* tspark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tspark@2x.png"; sourceTree = "<group>"; };
 		352C500A18D6138700996DF1 /* MuseoSansRounded-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-300.otf"; sourceTree = "<group>"; };
 		352C500B18D6138700996DF1 /* MuseoSansRounded-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-500.otf"; sourceTree = "<group>"; };
 		352C500C18D6138700996DF1 /* MuseoSansRounded-700.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSansRounded-700.otf"; sourceTree = "<group>"; };
@@ -125,6 +129,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		351ABF4818DCA7F600441829 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				351ABF4918DCA7F600441829 /* UI */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		351ABF4918DCA7F600441829 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				351ABF4A18DCA7F600441829 /* tspark.png */,
+				351ABF4B18DCA7F600441829 /* tspark@2x.png */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		352C500918D6138700996DF1 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +203,7 @@
 		35722E7118D21B5B008D71F9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				351ABF4818DCA7F600441829 /* Images */,
 				352C500918D6138700996DF1 /* Fonts */,
 				35722E7218D21B5B008D71F9 /* Merge-Info.plist */,
 				35722E7318D21B5B008D71F9 /* InfoPlist.strings */,
@@ -346,6 +368,8 @@
 			files = (
 				352C500E18D6138700996DF1 /* MuseoSansRounded-500.otf in Resources */,
 				35722E7518D21B5B008D71F9 /* InfoPlist.strings in Resources */,
+				351ABF4D18DCA7F600441829 /* tspark@2x.png in Resources */,
+				351ABF4C18DCA7F600441829 /* tspark.png in Resources */,
 				35722E7D18D21B5B008D71F9 /* Images.xcassets in Resources */,
 				352C500D18D6138700996DF1 /* MuseoSansRounded-300.otf in Resources */,
 				352C500F18D6138700996DF1 /* MuseoSansRounded-700.otf in Resources */,
