@@ -184,6 +184,38 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	if (_shapeId == SHAPE_ID_BOMB) {
 		color = [UIColor blackColor];
 		newshape = (UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:0];
+		
+		CAEmitterCell *ecell = [CAEmitterCell emitterCell];
+		ecell.contents = (id)[UIImage imageNamed:@"tspark"].CGImage;
+		ecell.birthRate = 30;
+		ecell.name = @"tspark";
+		[ecell setVelocity:60];
+		[ecell setVelocityRange:10];
+		[ecell setYAcceleration:-45.0f];
+		[ecell setEmissionLongitude:-M_PI_2];
+		[ecell setEmissionRange:M_PI_4/3];
+		[ecell setScale:0.35f];
+		[ecell setScaleSpeed:2.0f];
+		[ecell setScaleRange:0.1f];
+		[ecell setColor:[UIColor colorWithRed:1.0
+									   green:0.5
+										blue:0.1
+									   alpha:0.5].CGColor];
+		ecell.greenRange = 0.5;
+	
+		[ecell setLifetime:0.2f];
+		[ecell setLifetimeRange:0.1f];
+		
+		
+		CAEmitterLayer *elayer = [CAEmitterLayer layer];
+		elayer.emitterCells = @[ecell];
+		elayer.emitterPosition = CGPointMake(self.bounds.size.width*0.5f,self.bounds.size.height*0.3f);
+		elayer.emitterSize = CGSizeMake(10, 10);
+		elayer.emitterShape = kCAEmitterLayerRectangle;
+		elayer.renderMode = kCAEmitterLayerBackToFront;
+		[elayer setEmitterCells:@[ecell]];
+		[self.layer addSublayer:elayer];
+		
 	}
 	
 	if (_shapeId > MAX_POLYGON_ID && _shapeId <= MAX_BONUS_ID) {

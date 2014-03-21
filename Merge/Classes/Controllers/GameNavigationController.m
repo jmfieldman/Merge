@@ -16,7 +16,7 @@
 #define SPAWN_INITIAL_DELAY   1.0
 #define SPAWN_RATE_MIN        0.2
 
-#define SPECIAL_RATE 0.15
+#define SPECIAL_RATE 0.15 /* 0.15 */
 #define BLOCKER_RATE 0.4
 #define BOMB_RATE    0.6
 
