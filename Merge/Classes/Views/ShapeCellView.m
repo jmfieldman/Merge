@@ -179,6 +179,21 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	if (_shapeId == SHAPE_ID_BLOCKER) {
 		color = [UIColor whiteColor];
 		newshape = (UIBezierPath*)[s_shapeBezierPaths[@(_shapeWidth)] objectAtIndex:2];
+		
+		CALayer *iceblock = [CALayer layer];
+		iceblock.frame = CGRectMake(0, 0, 23, 23);
+		iceblock.position = _shapeLayer.position;
+		iceblock.contents = (id)[UIImage imageNamed:@"iceblock"].CGImage;
+		[_shapeContainer.layer addSublayer:iceblock];
+		
+		CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+		anim.fromValue = @(0);
+		anim.toValue = @(1);
+		anim.duration = 0.5;
+		anim.removedOnCompletion = NO;
+		anim.fillMode = kCAFillModeForwards;
+		anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		[iceblock addAnimation:anim forKey:@"opacity"];
 	}
 	
 	if (_shapeId == SHAPE_ID_BOMB) {
