@@ -265,7 +265,7 @@ SINGLETON_IMPL(GameNavigationController);
 	_spawnBasis++;
 	
 	/* Trigger next spawn */
-	NSLog(@"next spawn: %f", [self currentSpawnDelay]);
+	//NSLog(@"next spawn: %f", [self currentSpawnDelay]);
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self currentSpawnDelay] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 		[self spawnElement];
 	});
@@ -456,10 +456,14 @@ SINGLETON_IMPL(GameNavigationController);
 			continue;
 		}
 		
-		total_score_update += (1 << [_board shapeIdAtPoint:p]);
+		int scoreAtPoint = (1 << [_board shapeIdAtPoint:p]);
+		int multAtPoint  = [_board mergeMultiplierAtPoint:p];
+		total_score_update += scoreAtPoint * multAtPoint;
+		NSLog(@"score update: (+ %d * %d) %d", scoreAtPoint, multAtPoint, total_score_update);
 	}
 	
 	total_score_update *= [merges count];
+	NSLog(@"after merge %d score update: %d", [merges count], total_score_update);
 	_score += total_score_update;
 	[self updateScoreLabel];
 	
