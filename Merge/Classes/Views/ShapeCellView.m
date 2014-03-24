@@ -202,12 +202,12 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 		
 		CAEmitterCell *ecell = [CAEmitterCell emitterCell];
 		ecell.contents = (id)[UIImage imageNamed:@"tspark"].CGImage;
-		ecell.birthRate = 30;
+		ecell.birthRate = 20;
 		ecell.name = @"tspark";
 		[ecell setVelocity:60];
 		[ecell setVelocityRange:10];
 		[ecell setYAcceleration:-45.0f];
-		[ecell setEmissionLongitude:-M_PI_2];
+		[ecell setEmissionLongitude:-M_PI_2/1.25];
 		[ecell setEmissionRange:M_PI_4/3];
 		[ecell setScale:0.35f];
 		[ecell setScaleSpeed:2.0f];
@@ -220,12 +220,12 @@ static __strong NSMutableDictionary *s_shapeBezierPaths = nil;
 	
 		[ecell setLifetime:0.2f];
 		[ecell setLifetimeRange:0.1f];
-		
+				
 		
 		CAEmitterLayer *elayer = [CAEmitterLayer layer];
 		elayer.emitterCells = @[ecell];
 		elayer.emitterPosition = CGPointMake(self.bounds.size.width*0.5f,self.bounds.size.height*0.3f);
-		elayer.emitterSize = CGSizeMake(10, 10);
+		elayer.emitterSize = CGSizeMake(5, 5);
 		elayer.emitterShape = kCAEmitterLayerRectangle;
 		elayer.renderMode = kCAEmitterLayerBackToFront;
 		[elayer setEmitterCells:@[ecell]];
