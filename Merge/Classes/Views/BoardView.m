@@ -351,6 +351,55 @@
 - (void) animateBombAtPoint:(CGPoint)p {
 	int x = p.x;
 	int y = p.y;
+	
+	{
+		/* Insert smoke emitter */
+		CAEmitterCell *ecell = [CAEmitterCell emitterCell];
+		ecell.contents = (id)[UIImage imageNamed:@"smoke"].CGImage;
+		ecell.birthRate = 5;
+		ecell.name = @"smoke";
+		[ecell setVelocity:30];
+		[ecell setVelocityRange:5];
+		[ecell setYAcceleration:0];
+		[ecell setEmissionLongitude:0];
+		[ecell setEmissionRange:2*M_PI];
+		[ecell setScale:0.35f];
+		[ecell setScaleSpeed:0.2f];
+		[ecell setScaleRange:0.1f];
+		//[ecell setColor:[UIColor colorWithRed:1.0
+		//								green:0.5
+		//								 blue:0.1
+		//								alpha:0.5].CGColor];
+		ecell.color = [UIColor whiteColor].CGColor;
+		//ecell.greenRange = 0.35;
+		//ecell.blueRange = 0.35;
+		ecell.alphaSpeed = -1;
+		ecell.spin = 0;
+		ecell.spinRange = 3;
+		
+		[ecell setLifetime:1.5f];
+		[ecell setLifetimeRange:0.1f];
+		
+		
+		CAEmitterLayer *elayer = [CAEmitterLayer layer];
+		elayer.emitterCells = @[ecell];
+		elayer.emitterPosition = _cells[x][y].layer.position;//CGPointMake(self.bounds.size.width*0.5f,self.bounds.size.height*0.3f);
+		elayer.emitterSize = CGSizeMake(10, 10);
+		elayer.emitterShape = kCAEmitterLayerRectangle;
+		elayer.renderMode = kCAEmitterLayerBackToFront;
+		elayer.seed = rand();
+		[elayer setEmitterCells:@[ecell]];
+		[self.layer addSublayer:elayer];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+			elayer.birthRate = 0;
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+				[elayer removeFromSuperlayer];
+			});
+		});
+	}
+	
+	/* Clear spaces */
 	for (int i = (x-1); i <= (x+1); i++) {
 		for (int j = (y-1); j <= (y+1); j++) {
 			if (i < 0 || j < 0 || i >= BOARD_MAX_SIDE || j >= BOARD_MAX_SIDE) continue;
@@ -358,18 +407,25 @@
 			
 			ShapeCellView *cell = _cells[i][j];
 			_cells[i][j] = nil;
-			[UIView animateWithDuration:0.15
+			[UIView animateWithDuration:0.35
 								  delay:0
-								options:UIViewAnimationOptionCurveEaseInOut
+								options:UIViewAnimationOptionCurveEaseOut
 							 animations:^{
 								 cell.alpha = 0;
-								 float scale = floatBetween(1.2, 1.4);
-								 cell.transform = CGAffineTransformMakeScale(scale, scale);
+								 //float scale = floatBetween(1.2, 1.4);
+								 //cell.transform = CGAffineTransformMakeScale(scale, scale);
+								 
+								 CGPoint center = cell.center;
+								 center.x += (i-x)*(fastRand()%10+10);
+								 center.y += (j-y)*(fastRand()%10+10);
+								 cell.center = center;
+								 
 							 } completion:^(BOOL finished) {
 								 [cell removeFromSuperview];
 							 }];
 		}
 	}
+	
 }
 
 - (int) shapeIdAtPoint:(CGPoint)p {
