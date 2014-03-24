@@ -380,6 +380,8 @@
 	int x = p.x;
 	int y = p.y;
 	
+	//if (!_cells[x][y]) return;
+	
 	{
 		/* Insert smoke emitter */
 		CAEmitterCell *ecell = [CAEmitterCell emitterCell];
@@ -411,7 +413,8 @@
 		
 		CAEmitterLayer *elayer = [CAEmitterLayer layer];
 		elayer.emitterCells = @[ecell];
-		elayer.emitterPosition = _cells[x][y].layer.position;//CGPointMake(self.bounds.size.width*0.5f,self.bounds.size.height*0.3f);
+		//elayer.emitterPosition = _cells[x][y].layer.position;//CGPointMake(self.bounds.size.width*0.5f,self.bounds.size.height*0.3f);
+		elayer.emitterPosition = CGPointMake(_cellOffset/2 + _cellOffset*x, _cellOffset/2 + _cellOffset*y);
 		elayer.emitterSize = CGSizeMake(10, 10);
 		elayer.emitterShape = kCAEmitterLayerRectangle;
 		elayer.renderMode = kCAEmitterLayerBackToFront;
@@ -471,6 +474,16 @@
 	if (x < (BOARD_MAX_SIDE-1)) { if (_cells[x+1][y].shapeId > MAX_POLYGON_ID && _cells[x+1][y].shapeId < MAX_BONUS_ID) { mult *= (_cells[x+1][y].shapeId - MAX_POLYGON_ID)+1; } }
 	if (y < (BOARD_MAX_SIDE-1)) { if (_cells[x][y+1].shapeId > MAX_POLYGON_ID && _cells[x][y+1].shapeId < MAX_BONUS_ID) { mult *= (_cells[x][y+1].shapeId - MAX_POLYGON_ID)+1; } }
 	return mult;
+}
+
+- (float) fillRatio {
+	int count = 0;
+	for (int i = 0; i < _sideCount; i++) {
+		for (int j = 0; j < _sideCount; j++) {
+			if (_cells[i][j]) count++;
+		}
+	}
+	return (count / (float)(_sideCount * _sideCount));
 }
 
 @end

@@ -73,4 +73,7 @@ typedef enum SlideDirection {
 /* Merge multipliers? */
 - (int) mergeMultiplierAtPoint:(CGPoint)p;
 
+/* Fill ratio? */
+- (float) fillRatio;
+
 @end

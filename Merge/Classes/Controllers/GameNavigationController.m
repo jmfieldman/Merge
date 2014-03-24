@@ -14,11 +14,17 @@
 
 #define SPAWN_DELAY_HALF_LIFE 50
 #define SPAWN_INITIAL_DELAY   1.0
-#define SPAWN_RATE_MIN        0.2
+#define SPAWN_RATE_MIN        0.30
 
 #define SPECIAL_RATE 0.15 /* 0.15 */
-#define BLOCKER_RATE 0.4
-#define BOMB_RATE    0.6
+#define BLOCKER_RATE 0.5
+#define BOMB_RATE    0.5
+
+#define SPAWN_HEALTH_DECREMENT 0.05
+#define SPAWN_HEALTH_REGEN     0.004
+
+#define SPAWNS_UNTIL_PENALTY     10
+#define SPAWNS_UNTIL_MAX_PENALTY 10
 
 @interface GameNavigationController ()
 
@@ -98,9 +104,9 @@ SINGLETON_IMPL(GameNavigationController);
 		_nameScoreLabel.layer.rasterizationScale = [UIScreen mainScreen].scale;
 		[self.view addSubview:_nameScoreLabel];
 		
-		_nameTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(275, 0, 50, 40)];
+		_nameTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(262, 0, 50, 40)];
 		_nameTimeLabel.font = _nameScoreLabel.font;
-		_nameTimeLabel.text = @"time";
+		_nameTimeLabel.text = @"spawns";
 		_nameTimeLabel.alpha = _nameScoreLabel.alpha;
 		_nameTimeLabel.textAlignment = NSTextAlignmentLeft;
 		_nameTimeLabel.textColor = [UIColor whiteColor];
@@ -126,9 +132,9 @@ SINGLETON_IMPL(GameNavigationController);
 		_statScoreLabel.layer.rasterizationScale = [UIScreen mainScreen].scale;
 		[self.view addSubview:_statScoreLabel];
 		
-		_statTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 0, 100, 36)];
+		_statTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(157, 0, 100, 36)];
 		_statTimeLabel.font = [UIFont fontWithName:SCORE_VALUE_FONT size:20];
-		_statTimeLabel.text = @"0:00";
+		_statTimeLabel.text = @"0";
 		_statTimeLabel.alpha = 1;
 		_statTimeLabel.textAlignment = NSTextAlignmentRight;
 		_statTimeLabel.textColor = [UIColor whiteColor];
@@ -210,6 +216,19 @@ SINGLETON_IMPL(GameNavigationController);
 			[_instrButton addSubview:label];
 		}
 		
+		/* Health bar */
+		_health = 1;
+		_healthBar = [[UIView alloc] initWithFrame:CGRectMake(10, _boardContainer.frame.origin.y - 20, 300, 10)];
+		_healthBar.layer.borderColor = [UIColor whiteColor].CGColor;
+		_healthBar.layer.borderWidth = 1;
+		_healthBar.layer.shadowColor = [UIColor whiteColor].CGColor;
+		_healthBar.layer.shadowOpacity = 1;
+		_healthBar.layer.shadowOffset = CGSizeMake(0, 0);
+		_healthBar.layer.shadowRadius = 3;
+		_healthBar.backgroundColor = [UIColor redColor];
+		_healthBar.alpha = 0;
+		[self.view addSubview:_healthBar];
+		
 		[self hideMenu];
 	}
 	return self;
@@ -222,7 +241,10 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (float) currentSpawnDelay {
 	float sdelay = SPAWN_INITIAL_DELAY * powf(M_E, _spawnDelayDecay * _spawnBasis);
-	return MAX(sdelay, SPAWN_RATE_MIN);
+	float ratio = [_board fillRatio];
+	if (ratio > 0.8) ratio = 0.8;
+	ratio = ratio * ratio;
+	return MAX(sdelay, SPAWN_RATE_MIN) * (1-ratio);
 }
 
 - (void) startDemoMode {
@@ -242,11 +264,26 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) spawnElement {
+	/* Update time */
+	//double curT = CFAbsoluteTimeGetCurrent();
+	//_elapsedTime += (curT - _lastTimeCheck);
+	//_lastTimeCheck = curT;
+	//[self updateTimeLabel];
+	
 	if (!_shouldSpawn) return;
 	
 	if (![_board isFull]) {
 		int newShapeId = 0;
 		float special = floatBetween(0, 1);
+		
+		/* Penalty for not moving */
+		if (_spawnsSinceSlide > SPAWNS_UNTIL_PENALTY) {
+			int penaltyCount = _spawnsSinceSlide - SPAWNS_UNTIL_PENALTY;
+			if (penaltyCount > SPAWNS_UNTIL_MAX_PENALTY) penaltyCount = SPAWNS_UNTIL_MAX_PENALTY;
+			float penaltyRatio = penaltyCount / (float)SPAWNS_UNTIL_MAX_PENALTY;
+			special *= (1-penaltyRatio);
+		}
+		
 		if (!_demoMode && special < SPECIAL_RATE) {
 			special = floatBetween(0, 1);
 			if (special < BLOCKER_RATE) newShapeId = SHAPE_ID_BLOCKER;
@@ -260,12 +297,28 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		CGPoint newp = [_board randomEmptySpace];
 		[_board addShape:newShapeId at:newp delay:0 duration:0.25];
+		
+		/* Add health */
+		_health += SPAWN_HEALTH_REGEN;
+		if (_health > 1) _health = 1;
+		
+		_spawnsSinceSlide++;
+	} else if (!_demoMode) {
+		/* Board is full and not demo mode; reduce health */
+		_health -= SPAWN_HEALTH_DECREMENT;
+		if (_health < 0) _health = 0;
+	} else if (_demoMode) {
+		/* Board full in demo mode? Wipe the board */
+		[_board animateClearBoard];
 	}
 	
+	[self updateHealthBar];
+	
 	_spawnBasis++;
+	if (!_demoMode) [self updateTimeLabel];
 	
 	/* Trigger next spawn */
-	//NSLog(@"next spawn: %f", [self currentSpawnDelay]);
+	NSLog(@"next spawn: %f", [self currentSpawnDelay]);
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self currentSpawnDelay] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 		[self spawnElement];
 	});
@@ -273,6 +326,28 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) restoreSavedState {
 	[self showMenu];
+}
+
+- (void) updateHealthBar {
+		
+	if (_healthBar.alpha == 0 && _health < 1) {
+		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+			_healthBar.alpha = 1;
+		} completion:nil];
+	} else if (_healthBar.alpha == 1 && _health >= 1) {
+		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+			_healthBar.alpha = 0;
+		} completion:nil];
+	}
+	
+	float wd = 300 * _health;
+	[UIView animateWithDuration:[self currentSpawnDelay] delay:0 options:0 animations:^{
+		_healthBar.frame = CGRectMake(160 - wd/2, _healthBar.frame.origin.y, wd, _healthBar.frame.size.height);
+	} completion:nil];
+	
+	_healthBar.backgroundColor = [UIColor colorWithHue:0 saturation:_health brightness:_health alpha:1];
+	_healthBar.layer.borderColor = [UIColor colorWithWhite:_health/2+0.5 alpha:1].CGColor;
+	_healthBar.layer.shadowColor = _healthBar.layer.borderColor;
 }
 
 - (void) pressedPlay:(id)sender {
@@ -286,6 +361,9 @@ SINGLETON_IMPL(GameNavigationController);
 	
 	/* Reset spawn basis */
 	_spawnBasis = 0;
+	_spawnsSinceSlide = 0;
+	_health = 1;
+	[self updateHealthBar];
 	
 	/* Reset score */
 	_score = 0;
@@ -324,8 +402,9 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) updateTimeLabel {
-	int curSec = (int)_elapsedTime;
-	_statTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", curSec / 60, curSec % 60 ];
+	//int curSec = (int)_elapsedTime;
+	//_statTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", curSec / 60, curSec % 60 ];
+	_statTimeLabel.text = [NSString stringWithFormat:@"%d", _spawnBasis];
 }
 
 - (void) showMenu {
@@ -434,11 +513,21 @@ SINGLETON_IMPL(GameNavigationController);
 		[self demoModeSlide];
 		return;
 	}
+	
+	if (_slideQueue) {
+		[self swipedInDirection:_slideQueue];
+		_slideQueue = 0;
+	}
 }
 
 #pragma mark SwipeCatcherDelegate methods
 
 - (void) swipedInDirection:(int)dir {
+	
+	if (!_board.allowSlide) {
+		_slideQueue = dir;
+	}
+	
 	NSArray *merges = [_board slideInDirection:dir];
 	
 	int total_score_update = 0;
@@ -459,15 +548,25 @@ SINGLETON_IMPL(GameNavigationController);
 		int scoreAtPoint = (1 << [_board shapeIdAtPoint:p]);
 		int multAtPoint  = [_board mergeMultiplierAtPoint:p];
 		total_score_update += scoreAtPoint * multAtPoint;
-		NSLog(@"score update: (+ %d * %d) %d", scoreAtPoint, multAtPoint, total_score_update);
+		//NSLog(@"score update: (+ %d * %d) %d", scoreAtPoint, multAtPoint, total_score_update);
 	}
 	
 	total_score_update *= [merges count];
-	NSLog(@"after merge %d score update: %d", [merges count], total_score_update);
+	//NSLog(@"after merge %d score update: %d", [merges count], total_score_update);
 	_score += total_score_update;
 	[self updateScoreLabel];
 	
-	if (bomb_count) [self applyEarthquakeToView:_boardContainer duration:0.3+(bomb_count*0.1) delay:0.2 offset:10+(bomb_count*2)];
+	if (bomb_count) {
+		[self applyEarthquakeToView:_boardContainer duration:0.35+(bomb_count*0.02) delay:0.2 offset:10+(bomb_count*2)];
+		[self applyEarthquakeToView:_healthBar      duration:0.35+(bomb_count*0.02) delay:0.2 offset:7+(bomb_count*1)];
+		
+		[self applyEarthquakeToView:_statScoreLabel      duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
+		[self applyEarthquakeToView:_statTimeLabel       duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
+		[self applyEarthquakeToView:_nameScoreLabel      duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
+		[self applyEarthquakeToView:_nameTimeLabel       duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
+	}
+	
+	_spawnsSinceSlide = 0;
 }
 
 @end

@@ -18,12 +18,15 @@
 	BOOL       _demoMode;
 	BOOL       _isPlaying;
 	BOOL       _isPaused;
+	int        _slideQueue;
 	
 	BOOL       _shouldSpawn;
 	int        _spawnBasis;  /* Theoretically this should just equal the number of spawns this game */
 	float      _spawnDelayDecay;
 	
 	int        _spawnsWhileSliding;
+	
+	int        _spawnsSinceSlide;
 	
 	int        _score;
 	
@@ -43,6 +46,11 @@
 	UIButton  *_scoresButton;
 	UIButton  *_instrButton;
 	BOOL       _menuShown;
+	
+	/* Health */
+	float      _health;
+	UIView    *_healthBar;
+	
 }
 
 SINGLETON_INTR(GameNavigationController);
