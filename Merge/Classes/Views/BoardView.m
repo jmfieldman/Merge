@@ -161,6 +161,7 @@
 				
 				/* Change shape of merged-into */
 				int newShape = _cells[fx][fy].shapeId+1;
+				CGPoint middle = _cells[fx][fy].center;
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration/3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 					if (newShape != (SHAPE_ID_BOMB+1)) {
 						[_cells[fx][fy] setShape:newShape duration:0.25 color:[[ColorTheme sharedInstance] colorForShapeId:newShape]];
@@ -177,7 +178,34 @@
 					anim.autoreverses = YES;
 					[_cells[fx][fy].layer addAnimation:anim forKey:@"scale"];
 					
+					/* Animate score */
+					if (0) {
+						UILabel *score = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _cellSize * 2, _cellSize * 2)];
+						score.text = [NSString stringWithFormat:@"+%d", 1 << (newShape-1)];
+						score.textColor = [UIColor whiteColor];
+						score.textAlignment = NSTextAlignmentCenter;
+						score.font = [UIFont fontWithName:@"MuseoSansRounded-700" size:10];
+						score.backgroundColor = [UIColor clearColor];
+						score.center = middle;
+						score.layer.shadowColor = [UIColor blackColor].CGColor;
+						score.layer.shadowOpacity = 1;
+						score.layer.shadowOffset = CGSizeMake(0, 0);
+						score.layer.shadowRadius = 3;
+						score.layer.shouldRasterize = YES;
+						score.layer.rasterizationScale = [UIScreen mainScreen].scale;
+						[self addSubview:score];
+						
+						[UIView animateWithDuration:0.75 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+							score.alpha = 0;
+							score.transform = CGAffineTransformMakeScale(3, 3);
+						} completion:^(BOOL finished) {
+							[score removeFromSuperview];
+						}];
+						
+					}
 				});
+				
+				
 				
 				/* Merged cells get removed */
 				[_cells[x][y] performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:duration];
@@ -432,6 +460,17 @@
 	ShapeCellView *cell = _cells[(int)p.x][(int)p.y];
 	if (!cell) return -1;
 	return cell.shapeId;
+}
+
+- (int) mergeMultiplierAtPoint:(CGPoint)p {
+	int x = p.x;
+	int y = p.y;
+	int mult = 1;
+	if (x > 0) { if (_cells[x-1][y].shapeId > MAX_POLYGON_ID && _cells[x-1][y].shapeId < MAX_BONUS_ID) { mult *= (_cells[x-1][y].shapeId - MAX_POLYGON_ID)+1; } }
+	if (y > 0) { if (_cells[x][y-1].shapeId > MAX_POLYGON_ID && _cells[x][y-1].shapeId < MAX_BONUS_ID) { mult *= (_cells[x][y-1].shapeId - MAX_POLYGON_ID)+1; } }
+	if (x < (BOARD_MAX_SIDE-1)) { if (_cells[x+1][y].shapeId > MAX_POLYGON_ID && _cells[x+1][y].shapeId < MAX_BONUS_ID) { mult *= (_cells[x+1][y].shapeId - MAX_POLYGON_ID)+1; } }
+	if (y < (BOARD_MAX_SIDE-1)) { if (_cells[x][y+1].shapeId > MAX_POLYGON_ID && _cells[x][y+1].shapeId < MAX_BONUS_ID) { mult *= (_cells[x][y+1].shapeId - MAX_POLYGON_ID)+1; } }
+	return mult;
 }
 
 @end

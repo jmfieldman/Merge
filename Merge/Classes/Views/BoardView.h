@@ -70,4 +70,7 @@ typedef enum SlideDirection {
 /* What's at a coord? */
 - (int) shapeIdAtPoint:(CGPoint)p;
 
+/* Merge multipliers? */
+- (int) mergeMultiplierAtPoint:(CGPoint)p;
+
 @end
