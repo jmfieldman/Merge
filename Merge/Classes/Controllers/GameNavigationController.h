@@ -43,9 +43,13 @@
 	
 	/* Menu items */
 	UIButton  *_playButton;
+	UILabel   *_playButtonLabel;
 	UIButton  *_scoresButton;
 	UIButton  *_instrButton;
 	BOOL       _menuShown;
+	
+	/* Game over */
+	UILabel   *_gameOverMsg;
 	
 	/* Health */
 	float      _health;

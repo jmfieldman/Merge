@@ -168,6 +168,7 @@ SINGLETON_IMPL(GameNavigationController);
 			label.layer.shouldRasterize = YES;
 			label.layer.rasterizationScale = [UIScreen mainScreen].scale;
 			[_playButton addSubview:label];
+			_playButtonLabel = label;
 		}
 		
 		_scoresButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -215,6 +216,23 @@ SINGLETON_IMPL(GameNavigationController);
 			label.layer.rasterizationScale = [UIScreen mainScreen].scale;
 			[_instrButton addSubview:label];
 		}
+		
+		/* Game over */
+		_gameOverMsg = [[UILabel alloc] initWithFrame:CGRectMake(10, _boardContainer.frame.origin.y - 30, 300, 30)];
+		_gameOverMsg.text = @"GAME OVER :(";
+		_gameOverMsg.textColor = [UIColor whiteColor];
+		_gameOverMsg.font = [UIFont fontWithName:MENU_FONT size:20];
+		_gameOverMsg.textAlignment = NSTextAlignmentCenter;
+		_gameOverMsg.userInteractionEnabled = NO;
+		_gameOverMsg.layer.shadowOpacity = 1;
+		_gameOverMsg.layer.shadowColor = [UIColor whiteColor].CGColor;
+		_gameOverMsg.layer.shadowOffset = CGSizeMake(0, 0);
+		_gameOverMsg.layer.shadowRadius = 2;
+		_gameOverMsg.layer.shouldRasterize = YES;
+		_gameOverMsg.layer.rasterizationScale = [UIScreen mainScreen].scale;
+		_gameOverMsg.alpha = 0;
+		_gameOverMsg.transform = CGAffineTransformMakeScale(0.8, 0.8);
+		[self.view addSubview:_gameOverMsg];
 		
 		/* Health bar */
 		_health = 1;
@@ -272,7 +290,8 @@ SINGLETON_IMPL(GameNavigationController);
 	
 	if (!_shouldSpawn) return;
 	
-	if (![_board isFull]) {
+	BOOL isFull = [_board isFull];
+	if (!isFull) {
 		int newShapeId = 0;
 		float special = floatBetween(0, 1);
 		
@@ -306,13 +325,20 @@ SINGLETON_IMPL(GameNavigationController);
 	} else if (!_demoMode) {
 		/* Board is full and not demo mode; reduce health */
 		_health -= SPAWN_HEALTH_DECREMENT;
-		if (_health < 0) _health = 0;
+		if (_health <= 0) {
+			_health = 0;
+		}
 	} else if (_demoMode) {
 		/* Board full in demo mode? Wipe the board */
 		[_board animateClearBoard];
 	}
 	
 	[self updateHealthBar];
+	
+	if (_health <= 0 && isFull) {
+		[self gameOverOccurred];
+		return;
+	}
 	
 	_spawnBasis++;
 	if (!_demoMode) [self updateTimeLabel];
@@ -350,6 +376,33 @@ SINGLETON_IMPL(GameNavigationController);
 	_healthBar.layer.shadowColor = _healthBar.layer.borderColor;
 }
 
+- (void) gameOverOccurred {
+	
+	_shouldSpawn = NO;
+	
+	_isPlaying = NO;
+	
+	/* Can't swipe anymore */
+	_swipeCatcher.userInteractionEnabled = NO;
+	
+	/* Remove game over message */
+	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_gameOverMsg.alpha = 1;
+		_gameOverMsg.transform = CGAffineTransformIdentity;
+	} completion:nil];
+	
+	/* Animate board into alpha state */
+	[UIView animateWithDuration:0.75 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_board.alpha = 0.1;
+	} completion:^(BOOL finished) {
+		[self showMenu];
+	}];
+			
+	/* Change play button label */
+	_playButtonLabel.text = @"PLAY AGAIN";
+	
+}
+
 - (void) pressedPlay:(id)sender {
 	if (!_isPlaying) {
 		/* Start game */
@@ -385,8 +438,20 @@ SINGLETON_IMPL(GameNavigationController);
 		_board.alpha = 1;
 	} completion:nil];
 	
+	/* Remove game over message */
+	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_gameOverMsg.alpha = 0;
+		_gameOverMsg.transform = CGAffineTransformMakeScale(0.8, 0.8);
+	} completion:nil];
+	
 	/* Kill all squares in demo/old game */
 	[_board animateClearBoard];
+	
+	/* Start spawning */
+	if (!_shouldSpawn) {
+		_shouldSpawn = YES;
+		[self spawnElement];
+	}
 }
 
 - (void) pressedScores:(id)sender {
