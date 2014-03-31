@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BoardView.h"
 
-@interface GameNavigationController : UIViewController <BoardViewDelegate, SwipeCatcherDelegate> {
+@interface GameNavigationController : UIViewController <BoardViewDelegate, SwipeCatcherDelegate, GKGameCenterControllerDelegate> {
 	NSMutableArray *_shapeCells;
 	
 	UIView    *_boardContainer;
@@ -29,6 +29,8 @@
 	int        _spawnsSinceSlide;
 	
 	int        _score;
+	
+	BOOL       _wantsGCShow;
 	
 	double     _elapsedTime;
 	double     _lastTimeCheck;
@@ -55,6 +57,8 @@
 	float      _health;
 	UIView    *_healthBar;
 	
+	/* Help screen */
+	UIButton  *_helpScreen;
 }
 
 SINGLETON_INTR(GameNavigationController);

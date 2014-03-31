@@ -43,6 +43,8 @@
 		35722EB618D248A8008D71F9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB418D248A8008D71F9 /* AVFoundation.framework */; };
 		35722EB718D248A8008D71F9 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB518D248A8008D71F9 /* GameKit.framework */; };
 		35722EBB18D24977008D71F9 /* ShapeCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EBA18D24977008D71F9 /* ShapeCellView.m */; };
+		35A7D42F18EA2AA3000C41C3 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 35A7D42D18EA2AA3000C41C3 /* help.png */; };
+		35A7D43018EA2AA3000C41C3 /* help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35A7D42E18EA2AA3000C41C3 /* help@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +111,8 @@
 		35722EB518D248A8008D71F9 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		35722EB918D24977008D71F9 /* ShapeCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeCellView.h; sourceTree = "<group>"; };
 		35722EBA18D24977008D71F9 /* ShapeCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeCellView.m; sourceTree = "<group>"; };
+		35A7D42D18EA2AA3000C41C3 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
+		35A7D42E18EA2AA3000C41C3 /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,8 @@
 		351ABF4918DCA7F600441829 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				35A7D42D18EA2AA3000C41C3 /* help.png */,
+				35A7D42E18EA2AA3000C41C3 /* help@2x.png */,
 				3513E3E518DF58BC0090D461 /* smoke.png */,
 				3513E3E618DF58BC0090D461 /* smoke@2x.png */,
 				3513E3E118DF52ED0090D461 /* iceblock.png */,
@@ -384,8 +390,10 @@
 				3513E3E318DF52ED0090D461 /* iceblock.png in Resources */,
 				351ABF4C18DCA7F600441829 /* tspark.png in Resources */,
 				3513E3E818DF58BC0090D461 /* smoke@2x.png in Resources */,
+				35A7D43018EA2AA3000C41C3 /* help@2x.png in Resources */,
 				35722E7D18D21B5B008D71F9 /* Images.xcassets in Resources */,
 				3513E3E418DF52ED0090D461 /* iceblock@2x.png in Resources */,
+				35A7D42F18EA2AA3000C41C3 /* help.png in Resources */,
 				3513E3E718DF58BC0090D461 /* smoke.png in Resources */,
 				352C500D18D6138700996DF1 /* MuseoSansRounded-300.otf in Resources */,
 				352C500F18D6138700996DF1 /* MuseoSansRounded-700.otf in Resources */,

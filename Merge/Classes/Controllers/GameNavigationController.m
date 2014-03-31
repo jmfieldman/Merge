@@ -26,6 +26,8 @@
 #define SPAWNS_UNTIL_PENALTY     10
 #define SPAWNS_UNTIL_MAX_PENALTY 10
 
+static BOOL _cycleCheck = NO;
+
 @interface GameNavigationController ()
 
 @end
@@ -148,7 +150,7 @@ SINGLETON_IMPL(GameNavigationController);
 		
 		
 		_playButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_playButton.frame = CGRectMake(0, _boardContainer.frame.origin.y + 40, 320, 60);
+		_playButton.frame = CGRectMake(0, _boardContainer.frame.origin.y + 60, 320, 60);
 		_playButton.backgroundColor = [UIColor clearColor];
 		_playButton.alpha = 0;
 		[_playButton addTarget:self action:@selector(pressedPlay:) forControlEvents:UIControlEventTouchUpInside];
@@ -247,6 +249,17 @@ SINGLETON_IMPL(GameNavigationController);
 		_healthBar.alpha = 0;
 		[self.view addSubview:_healthBar];
 		
+		/* Help screen */
+		_helpScreen = [UIButton buttonWithType:UIButtonTypeCustom];
+		_helpScreen.frame = self.view.bounds;
+		_helpScreen.alpha = 0;
+		[_helpScreen addTarget:self action:@selector(pressedHelpEscape:) forControlEvents:UIControlEventTouchUpInside];
+		[self.view addSubview:_helpScreen];
+		
+		UIImageView *helpBG = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"help"]];
+		helpBG.center = _boardContainer.center;
+		[_helpScreen addSubview:helpBG];
+		
 		[self hideMenu];
 	}
 	return self;
@@ -340,11 +353,11 @@ SINGLETON_IMPL(GameNavigationController);
 		return;
 	}
 	
-	_spawnBasis++;
+	if (!isFull) _spawnBasis++;
 	if (!_demoMode) [self updateTimeLabel];
 	
 	/* Trigger next spawn */
-	NSLog(@"next spawn: %f", [self currentSpawnDelay]);
+	//NSLog(@"next spawn: %f", [self currentSpawnDelay]);
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self currentSpawnDelay] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
 		[self spawnElement];
 	});
@@ -376,7 +389,59 @@ SINGLETON_IMPL(GameNavigationController);
 	_healthBar.layer.shadowColor = _healthBar.layer.borderColor;
 }
 
+- (void) updateScores:(int64_t)lastScore newSpawns:(int64_t)spawnCount {
+	
+	
+	
+	
+	if (![GKLocalPlayer localPlayer].authenticated) {
+		[GKLocalPlayer localPlayer].authenticateHandler = ^(UIViewController *viewController, NSError *error) {
+			if (viewController) {
+				[self presentViewController:viewController animated:YES completion:^{
+					[self updateScores:0 newSpawns:0];
+					[self showGamecenterInfo];
+				}];
+			} else {
+				if (_cycleCheck) {
+					_cycleCheck = NO;
+					return;
+				}
+				_cycleCheck = YES;
+				
+				[self updateScores:0 newSpawns:0];
+			}
+		};
+	}
+	
+	
+	PersistentDictionary *scores = [PersistentDictionary dictionaryWithName:@"scores"];
+	int64_t lastmax = [[scores.dictionary objectForKey:@"max"] longLongValue];
+	int64_t spawns  = [[scores.dictionary objectForKey:@"spawns"] longLongValue];
+	
+	if (lastScore > lastmax) {
+		scores.dictionary[@"max"] = [NSNumber numberWithLongLong:lastScore];
+		
+		if ([GKLocalPlayer localPlayer].authenticated) {
+			GKScore *score = [[GKScore alloc] initWithLeaderboardIdentifier:@"MERGESCORE"];
+			score.value = lastScore;
+			[GKScore reportScores:@[score] withCompletionHandler:^(NSError *error) {}];
+		}
+	}
+	
+	spawns += spawnCount;
+	scores.dictionary[@"spawns"] = [NSNumber numberWithLongLong:spawns];
+	if (spawns > 0 && [GKLocalPlayer localPlayer].authenticated) {
+		GKScore *score = [[GKScore alloc] initWithLeaderboardIdentifier:@"TOTALSPAWNS"];
+		score.value = spawns;
+		[GKScore reportScores:@[score] withCompletionHandler:^(NSError *error) {}];
+	}
+	
+	[scores saveToFile];
+}
+
 - (void) gameOverOccurred {
+	
+	[self updateScores:_score newSpawns:_spawnBasis];
 	
 	_shouldSpawn = NO;
 	
@@ -455,11 +520,73 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) pressedScores:(id)sender {
+	_wantsGCShow = YES;
 	
+	/* Authorize if needed */
+	if (![GKLocalPlayer localPlayer].authenticated) {
+		
+		if ([[GKLocalPlayer localPlayer] respondsToSelector:@selector(setAuthenticateHandler:)]) {
+			[GKLocalPlayer localPlayer].authenticateHandler = ^(UIViewController *viewController, NSError *error) {
+				if (viewController) {
+					[self presentViewController:viewController animated:YES completion:^{
+						[self updateScores:0 newSpawns:0];
+						[self showGamecenterInfo];
+					}];
+				} else {
+					[self updateScores:0 newSpawns:0];
+					[self showGamecenterInfo];
+				}
+			};
+		}
+		
+	} else {
+		[self updateScores:0 newSpawns:0];
+		[self showGamecenterInfo];
+	}
+}
+
+- (void) showGamecenterInfo {
+	if (![GKLocalPlayer localPlayer].authenticated) {
+		return;
+	}
+	
+	if (!_wantsGCShow) return;
+	_wantsGCShow = NO;
+	
+	GKGameCenterViewController *vc = [[GKGameCenterViewController alloc] init];
+	vc.gameCenterDelegate = self;
+	vc.viewState = GKGameCenterViewControllerStateLeaderboards;
+	[self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)gameCenterViewControllerDidFinish:(GKGameCenterViewController *)gameCenterViewController {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) pressedInstr:(id)sender {
+	[self hideMenu];
 	
+	[UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_board.alpha = 0;
+	} completion:nil];
+	
+	[UIView animateWithDuration:0.5 delay:0.25 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_helpScreen.alpha = 1;
+	} completion:nil];
+}
+
+- (void) pressedHelpEscape:(id)sender {
+	
+	
+	[UIView animateWithDuration:0.5 delay:0.25 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_board.alpha = 0.1;
+	} completion:nil];
+	
+	[UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		_helpScreen.alpha = 0;
+	} completion:nil];
+	
+	[self showMenu];
 }
 
 - (void) updateScoreLabel {
