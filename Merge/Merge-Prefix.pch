@@ -17,6 +17,9 @@
 	#import <AVFoundation/AVFoundation.h>
 	#import <GameKit/GameKit.h>
 
+	#import "FlurryKey.h"
+	#import "Flurry.h"
+
 	#import "EXDebug.h"
 	#import "EXRemoteLog.h"
 	#import "NS+Hashes.h"
