@@ -603,6 +603,8 @@ SINGLETON_IMPL(GameNavigationController);
 		} else {
 			/* This is the animation for normal play button */
 			[_board animateClearBoard:YES];
+			
+			[Flurry logEvent:@"Started_Game"];
 		}
 		[self clearState];
 	}
@@ -617,6 +619,8 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) pressedScores:(id)sender {
 	_wantsGCShow = YES;
+	
+	[Flurry logEvent:@"Pressed_Scores"];
 	
 	/* Authorize if needed */
 	if (![GKLocalPlayer localPlayer].authenticated) {
@@ -671,6 +675,8 @@ SINGLETON_IMPL(GameNavigationController);
 	[UIView animateWithDuration:0.5 delay:0.25 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 		_helpScreen.alpha = 1;
 	} completion:nil];
+	
+	[Flurry logEvent:@"Instructions"];
 }
 
 - (void) pressedHelpEscape:(id)sender {
