@@ -63,6 +63,10 @@
 
 SINGLETON_INTR(GameNavigationController);
 
-- (void) restoreSavedState;
+@property (nonatomic, assign) BOOL bgPause;
+@property (nonatomic, assign) BOOL gcLogin;
+
+- (BOOL) restoreSavedState;
+- (void) saveState;
 
 @end

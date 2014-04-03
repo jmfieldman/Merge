@@ -62,7 +62,7 @@ typedef enum SlideDirection {
 - (void)handleSwipeGesture:(UIGestureRecognizer *)gestureRecognizer;
 
 /* Animate clear board */
-- (void) animateClearBoard;
+- (void) animateClearBoard:(BOOL)animated;
 
 /* Animate bomb effect */
 - (void) animateBombAtPoint:(CGPoint)p;

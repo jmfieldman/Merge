@@ -68,22 +68,30 @@
 	
 }
 
-- (void) animateClearBoard {
+- (void) animateClearBoard:(BOOL)animated {
+	
+	
 	for (int i = 0; i < BOARD_MAX_SIDE; i++) {
 		for (int j = 0; j < BOARD_MAX_SIDE; j++) {
 			UIView *cell = _cells[i][j];
 			_cells[i][j] = nil;
-			float delay = floatBetween(0, 0.3);
-			[UIView animateWithDuration:0.35
-								  delay:delay
-								options:UIViewAnimationOptionCurveEaseInOut
-							 animations:^{
-								 cell.alpha = 0;
-								 float scale = floatBetween(1.2, 1.4);
-								 cell.transform = CGAffineTransformMakeScale(scale, scale);
-							 } completion:^(BOOL finished) {
-								 [cell removeFromSuperview];
-							 }];
+			
+			if (animated) {
+			
+				float delay = floatBetween(0, 0.3);
+				[UIView animateWithDuration:0.35
+									  delay:delay
+									options:UIViewAnimationOptionCurveEaseInOut
+								 animations:^{
+									 cell.alpha = 0;
+									 float scale = floatBetween(1.2, 1.4);
+									 cell.transform = CGAffineTransformMakeScale(scale, scale);
+								 } completion:^(BOOL finished) {
+									 [cell removeFromSuperview];
+								 }];
+			} else {
+				[cell removeFromSuperview];
+			}
 		}
 	}
 }

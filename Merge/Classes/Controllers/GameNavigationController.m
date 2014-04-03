@@ -270,6 +270,17 @@ SINGLETON_IMPL(GameNavigationController);
     return YES;
 }
 
+- (BOOL) gcLogin {
+	PersistentDictionary *gc = [PersistentDictionary dictionaryWithName:@"gc"];
+	return [gc.dictionary[@"gc"] boolValue];
+}
+
+- (void) setGcLogin:(BOOL)gcLogin {
+	PersistentDictionary *gc = [PersistentDictionary dictionaryWithName:@"gc"];
+	gc.dictionary[@"gc"] = @(gcLogin);
+	[gc saveToFile];
+}
+
 - (float) currentSpawnDelay {
 	float sdelay = SPAWN_INITIAL_DELAY * powf(M_E, _spawnDelayDecay * _spawnBasis);
 	float ratio = [_board fillRatio];
@@ -302,6 +313,8 @@ SINGLETON_IMPL(GameNavigationController);
 	//[self updateTimeLabel];
 	
 	if (!_shouldSpawn) return;
+		
+	//NSLog(@"SPAWN");
 	
 	BOOL isFull = [_board isFull];
 	if (!isFull) {
@@ -343,7 +356,7 @@ SINGLETON_IMPL(GameNavigationController);
 		}
 	} else if (_demoMode) {
 		/* Board full in demo mode? Wipe the board */
-		[_board animateClearBoard];
+		[_board animateClearBoard:YES];
 	}
 	
 	[self updateHealthBar];
@@ -363,8 +376,58 @@ SINGLETON_IMPL(GameNavigationController);
 	});
 }
 
-- (void) restoreSavedState {
-	[self showMenu];
+- (void) setBgPause:(BOOL)bgPause {
+	_bgPause = bgPause;
+	
+	if (0) if (!_bgPause && _isPlaying) {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self currentSpawnDelay] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+			[self spawnElement];
+		});
+	}
+}
+
+- (BOOL) restoreSavedState {
+	PersistentDictionary *savedState = [PersistentDictionary dictionaryWithName:@"savedState"];
+	
+	if (![savedState.dictionary[@"playing"] boolValue]) {
+		[self showMenu];
+		return NO;
+	}
+	
+	/* Start the game engine */
+	[self pressedPlay:nil];
+		
+	return YES;
+}
+
+- (void) saveState {
+	PersistentDictionary *savedState = [PersistentDictionary dictionaryWithName:@"savedState"];
+	if (!_isPlaying) {
+		[self clearState];
+		return;
+	}
+	
+	NSMutableArray *boardIds = [NSMutableArray array];
+	for (int i = 0; i < BOARD_MAX_SIDE; i++) {
+		for (int j = 0; j < BOARD_MAX_SIDE; j++) {
+			[boardIds addObject:@([_board shapeIdAtPoint:CGPointMake(i,j)])];
+		}
+	}
+	
+	savedState.dictionary[@"board"] = boardIds;
+	savedState.dictionary[@"basis"] = @(_spawnBasis);
+	savedState.dictionary[@"score"] = @(_score);
+	savedState.dictionary[@"playing"] = @(YES);
+	[savedState saveToFile];
+}
+
+- (void) clearState {
+	PersistentDictionary *savedState = [PersistentDictionary dictionaryWithName:@"savedState"];
+	[savedState.dictionary removeObjectForKey:@"board"];
+	[savedState.dictionary removeObjectForKey:@"basis"];
+	[savedState.dictionary removeObjectForKey:@"score"];
+	[savedState.dictionary removeObjectForKey:@"playing"];
+	[savedState saveToFile];
 }
 
 - (void) updateHealthBar {
@@ -394,7 +457,7 @@ SINGLETON_IMPL(GameNavigationController);
 	
 	
 	
-	if (![GKLocalPlayer localPlayer].authenticated) {
+	if (![GKLocalPlayer localPlayer].authenticated && self.gcLogin) {
 		[GKLocalPlayer localPlayer].authenticateHandler = ^(UIViewController *viewController, NSError *error) {
 			if (viewController) {
 				[self presentViewController:viewController animated:YES completion:^{
@@ -510,7 +573,40 @@ SINGLETON_IMPL(GameNavigationController);
 	} completion:nil];
 	
 	/* Kill all squares in demo/old game */
-	[_board animateClearBoard];
+	
+	
+	
+	/* RESTORE FROM SAVED STATE */
+	{
+		PersistentDictionary *savedState = [PersistentDictionary dictionaryWithName:@"savedState"];
+		NSLog(@"Save state: %@", savedState.dictionary);
+		if ([savedState.dictionary[@"playing"] boolValue]) {
+			[_board animateClearBoard:NO];
+			
+			_score      = [savedState.dictionary[@"score"] intValue];
+			_spawnBasis = [savedState.dictionary[@"basis"] intValue];
+			[self updateScoreLabel];
+			[self updateTimeLabel];
+			
+			/* Set shapes */
+			NSArray *shapeIds = savedState.dictionary[@"board"];
+			int idx = 0;
+			for (int i = 0; i < BOARD_MAX_SIDE; i++) {
+				for (int j = 0; j < BOARD_MAX_SIDE; j++) {
+					int shapeId = [shapeIds[idx] intValue];
+					if (shapeId == -1) { idx++; continue; }
+					[_board addShape:shapeId at:CGPointMake(i, j) delay:0 duration:0.25];
+					NSLog(@"Adding %d to %d, %d", shapeId, i, j);
+					idx++;
+				}
+			}
+		} else {
+			/* This is the animation for normal play button */
+			[_board animateClearBoard:YES];
+		}
+		[self clearState];
+	}
+	
 	
 	/* Start spawning */
 	if (!_shouldSpawn) {
@@ -533,6 +629,7 @@ SINGLETON_IMPL(GameNavigationController);
 						[self showGamecenterInfo];
 					}];
 				} else {
+					self.gcLogin = YES;
 					[self updateScores:0 newSpawns:0];
 					[self showGamecenterInfo];
 				}
@@ -540,6 +637,7 @@ SINGLETON_IMPL(GameNavigationController);
 		}
 		
 	} else {
+		self.gcLogin = YES;
 		[self updateScores:0 newSpawns:0];
 		[self showGamecenterInfo];
 	}
