@@ -44,6 +44,7 @@
 		35722EB718D248A8008D71F9 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35722EB518D248A8008D71F9 /* GameKit.framework */; };
 		35722EBB18D24977008D71F9 /* ShapeCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35722EBA18D24977008D71F9 /* ShapeCellView.m */; };
 		35A46E2E18ECE0DE00201F7D /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A46E2D18ECE0DE00201F7D /* libFlurry_4.4.0.a */; };
+		35A46E3118ECE19300201F7D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A46E3018ECE19300201F7D /* SystemConfiguration.framework */; };
 		35A7D42F18EA2AA3000C41C3 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 35A7D42D18EA2AA3000C41C3 /* help.png */; };
 		35A7D43018EA2AA3000C41C3 /* help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35A7D42E18EA2AA3000C41C3 /* help@2x.png */; };
 /* End PBXBuildFile section */
@@ -115,6 +116,7 @@
 		35A46E2C18ECE0DE00201F7D /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		35A46E2D18ECE0DE00201F7D /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		35A46E2F18ECE0FD00201F7D /* FlurryKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryKey.h; sourceTree = "<group>"; };
+		35A46E3018ECE19300201F7D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		35A7D42D18EA2AA3000C41C3 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		35A7D42E18EA2AA3000C41C3 /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35A46E3118ECE19300201F7D /* SystemConfiguration.framework in Frameworks */,
 				35722EB618D248A8008D71F9 /* AVFoundation.framework in Frameworks */,
 				35722EB718D248A8008D71F9 /* GameKit.framework in Frameworks */,
 				35A46E2E18ECE0DE00201F7D /* libFlurry_4.4.0.a in Frameworks */,
@@ -201,6 +204,7 @@
 		35722E6918D21B5B008D71F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				35A46E3018ECE19300201F7D /* SystemConfiguration.framework */,
 				35722EB418D248A8008D71F9 /* AVFoundation.framework */,
 				35722EB518D248A8008D71F9 /* GameKit.framework */,
 				35722E6A18D21B5B008D71F9 /* Foundation.framework */,
