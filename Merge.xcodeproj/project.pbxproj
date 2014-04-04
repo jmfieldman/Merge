@@ -58,8 +58,6 @@
 		35A46E4A18EF22B300201F7D /* score_3n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 35A46E3D18EF22B300201F7D /* score_3n.caf */; };
 		35A46E4B18EF22B300201F7D /* score_4n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 35A46E3E18EF22B300201F7D /* score_4n.caf */; };
 		35A46E4C18EF22B300201F7D /* start_game.caf in Resources */ = {isa = PBXBuildFile; fileRef = 35A46E3F18EF22B300201F7D /* start_game.caf */; };
-		35A46E4F18EF22F500201F7D /* PreloadedSFX.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A46E4D18EF22F500201F7D /* PreloadedSFX.m */; };
-		35A46E5118EF231B00201F7D /* tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 35A46E5018EF231B00201F7D /* tap.wav */; };
 		35A7D42F18EA2AA3000C41C3 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 35A7D42D18EA2AA3000C41C3 /* help.png */; };
 		35A7D43018EA2AA3000C41C3 /* help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35A7D42E18EA2AA3000C41C3 /* help@2x.png */; };
 /* End PBXBuildFile section */
@@ -145,9 +143,6 @@
 		35A46E3D18EF22B300201F7D /* score_3n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = score_3n.caf; sourceTree = "<group>"; };
 		35A46E3E18EF22B300201F7D /* score_4n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = score_4n.caf; sourceTree = "<group>"; };
 		35A46E3F18EF22B300201F7D /* start_game.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = start_game.caf; sourceTree = "<group>"; };
-		35A46E4D18EF22F500201F7D /* PreloadedSFX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreloadedSFX.m; sourceTree = "<group>"; };
-		35A46E4E18EF22F500201F7D /* PreloadedSFX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreloadedSFX.h; sourceTree = "<group>"; };
-		35A46E5018EF231B00201F7D /* tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap.wav; sourceTree = "<group>"; };
 		35A7D42D18EA2AA3000C41C3 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		35A7D42E18EA2AA3000C41C3 /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -313,8 +308,6 @@
 		35722E9E18D24895008D71F9 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				35A46E4E18EF22F500201F7D /* PreloadedSFX.h */,
-				35A46E4D18EF22F500201F7D /* PreloadedSFX.m */,
 				35722E9F18D24895008D71F9 /* EXDebug.h */,
 				35722EA018D24895008D71F9 /* EXDebug.m */,
 				35722EA118D24895008D71F9 /* EXRemoteLog.h */,
@@ -384,7 +377,6 @@
 				35A46E3D18EF22B300201F7D /* score_3n.caf */,
 				35A46E3E18EF22B300201F7D /* score_4n.caf */,
 				35A46E3F18EF22B300201F7D /* start_game.caf */,
-				35A46E5018EF231B00201F7D /* tap.wav */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -485,7 +477,6 @@
 				35A7D42F18EA2AA3000C41C3 /* help.png in Resources */,
 				3513E3E718DF58BC0090D461 /* smoke.png in Resources */,
 				35A46E4A18EF22B300201F7D /* score_3n.caf in Resources */,
-				35A46E5118EF231B00201F7D /* tap.wav in Resources */,
 				35A46E4118EF22B300201F7D /* beat2.caf in Resources */,
 				352C500D18D6138700996DF1 /* MuseoSansRounded-300.otf in Resources */,
 				352C500F18D6138700996DF1 /* MuseoSansRounded-700.otf in Resources */,
@@ -522,7 +513,6 @@
 				35069D5C18D49C37006E561B /* ColorTheme.m in Sources */,
 				35722E7B18D21B5B008D71F9 /* AppDelegate.m in Sources */,
 				35722E7718D21B5B008D71F9 /* main.m in Sources */,
-				35A46E4F18EF22F500201F7D /* PreloadedSFX.m in Sources */,
 				35722EAF18D24895008D71F9 /* MathHelper.m in Sources */,
 				35722EB318D24895008D71F9 /* SKBounceAnimation.m in Sources */,
 				352C501218D6564800996DF1 /* SwipeCatcher.m in Sources */,

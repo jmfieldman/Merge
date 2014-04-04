@@ -1,2 +1,2 @@
-#define FLURRY_KEY @"8HDWTH4ZVQPP8W3XPKWT"
-
+#define FLURRY_KEY @"XXXXXXXXXX"
+#warning need to add flurry key
