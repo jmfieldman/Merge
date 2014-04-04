@@ -28,6 +28,7 @@
 	#import "SKBounceAnimation.h"
 	#import "MathHelper.h"
 
+	#import "PreloadedSFX.h"
 	#import "UIButton+BouncyPress.h"
 	
 #endif
