@@ -306,6 +306,9 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) spawnElement {
+	
+	static int beat_count = 0;
+	
 	/* Update time */
 	//double curT = CFAbsoluteTimeGetCurrent();
 	//_elapsedTime += (curT - _lastTimeCheck);
@@ -367,7 +370,11 @@ SINGLETON_IMPL(GameNavigationController);
 	}
 	
 	if (!isFull) _spawnBasis++;
-	if (!_demoMode) [self updateTimeLabel];
+	if (!_demoMode) {
+		beat_count++;
+		[PreloadedSFX playSFX:PLSFX_BEAT1+(beat_count&1)];
+		[self updateTimeLabel];
+	}
 	
 	/* Trigger next spawn */
 	//NSLog(@"next spawn: %f", [self currentSpawnDelay]);
@@ -504,6 +511,8 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) gameOverOccurred {
 	
+	[PreloadedSFX playSFX:PLSFX_GAMEOVER];
+	
 	[self updateScores:_score newSpawns:_spawnBasis];
 	
 	_shouldSpawn = NO;
@@ -605,6 +614,7 @@ SINGLETON_IMPL(GameNavigationController);
 			[_board animateClearBoard:YES];
 			
 			[Flurry logEvent:@"Started_Game"];
+			[PreloadedSFX playSFX:PLSFX_GAMESTART];
 		}
 		[self clearState];
 	}
@@ -619,6 +629,8 @@ SINGLETON_IMPL(GameNavigationController);
 
 - (void) pressedScores:(id)sender {
 	_wantsGCShow = YES;
+	
+	[PreloadedSFX playSFX:PLSFX_MENUTAP];
 	
 	[Flurry logEvent:@"Pressed_Scores"];
 	
@@ -668,6 +680,8 @@ SINGLETON_IMPL(GameNavigationController);
 - (void) pressedInstr:(id)sender {
 	[self hideMenu];
 	
+	[PreloadedSFX playSFX:PLSFX_MENUTAP];
+	
 	[UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 		_board.alpha = 0;
 	} completion:nil];
@@ -680,7 +694,7 @@ SINGLETON_IMPL(GameNavigationController);
 }
 
 - (void) pressedHelpEscape:(id)sender {
-	
+	[PreloadedSFX playSFX:PLSFX_MENUTAP];
 	
 	[UIView animateWithDuration:0.5 delay:0.25 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 		_board.alpha = 0.1;
@@ -827,11 +841,13 @@ SINGLETON_IMPL(GameNavigationController);
 	NSArray *merges = [_board slideInDirection:dir];
 	
 	int total_score_update = 0;
+	int merge_per_shape[100] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	
 	int bomb_count = 0;
 	for (NSValue *merge in merges) {
 		CGPoint p = [merge CGPointValue];
 		int shapeid = [_board shapeIdAtPoint:p];
+		if (shapeid >= 0 && shapeid < 100) merge_per_shape[shapeid]++;
 		if (shapeid == SHAPE_ID_BOMB) {
 			bomb_count++;
 			
@@ -847,6 +863,21 @@ SINGLETON_IMPL(GameNavigationController);
 		//NSLog(@"score update: (+ %d * %d) %d", scoreAtPoint, multAtPoint, total_score_update);
 	}
 	
+	/* Count actual merges */
+	int actual_merges = [merges count] - bomb_count;
+	int tdel = 0;
+	//int tones_to_play = (actual_merges+1)/2;
+	if (actual_merges) for (int i = 0; i < 16; i++) {
+		if (merge_per_shape[i]) {
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(tdel*0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+				[PreloadedSFX playSFX:PLSFX_SCORE1+((i>=3)?2:i)];
+			});
+			tdel++;
+		}
+	}
+	
+	//[PreloadedSFX playSFX:PLSFX_MOVE];
+	
 	total_score_update *= [merges count];
 	//NSLog(@"after merge %d score update: %d", [merges count], total_score_update);
 	_score += total_score_update;
@@ -860,6 +891,10 @@ SINGLETON_IMPL(GameNavigationController);
 		[self applyEarthquakeToView:_statTimeLabel       duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
 		[self applyEarthquakeToView:_nameScoreLabel      duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
 		[self applyEarthquakeToView:_nameTimeLabel       duration:0.35+(bomb_count*0.05) delay:0.2 offset:2+(bomb_count*1)];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void){
+			[PreloadedSFX playSFX:PLSFX_BOMB];
+		});
 	}
 	
 	_spawnsSinceSlide = 0;

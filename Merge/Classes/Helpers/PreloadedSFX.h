@@ -11,10 +11,29 @@
 typedef enum PreloadedSFXType {
 	PLSFX_MENUTAP = 0,
 	
+	PLSFX_BEAT1,
+	PLSFX_BEAT2,
+	
+	PLSFX_BOMB,
+	
+	PLSFX_GAMEOVER,
+	PLSFX_GAMESTART,
+	
+	PLSFX_MOVE,
+	
+	PLSFX_SCORE1,
+	PLSFX_SCORE2,
+	PLSFX_SCORE3,
+	PLSFX_SCORE4,
+	PLSFX_SCORE5,
+	PLSFX_SCORE6,
+	PLSFX_SCORE7,
 	
 	PLSFX_COUNT,
 } PreloadedSFXType_t;
 
+#define NUM_BEATS  2
+#define NUM_SCORES 7
 
 @interface PreloadedSFX : NSObject {
 

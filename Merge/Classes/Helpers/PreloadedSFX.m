@@ -20,7 +20,23 @@ static BOOL           s_mute = NO;
 static NSString *s_filenames[PLSFX_COUNT] = {
 	@"tap.wav",
 	
+	@"beat1.wav",
+	@"beat2.wav",
 	
+	@"bomb.caf",
+	
+	@"game_over.caf",
+	@"start_game.caf",
+	
+	@"move.caf",
+	
+	@"score_1nc.caf",
+	@"score_1nb.caf",
+	@"score_1n.caf",
+	@"score_2n.caf",
+	@"score_2nb.caf",
+	@"score_3n.caf",
+	@"score_4n.caf",
 };
 
 @implementation PreloadedSFX
